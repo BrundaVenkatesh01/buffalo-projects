@@ -1,0 +1,135 @@
+BUFFALO PROJECTS - PUBLIC/PRIVATE WORKSPACE AUDIT
+==================================================
+
+QUICK SUMMARY:
+- Buffalo Projects uses a simple publish/unpublish model based on isPublic boolean flag
+- All workspaces are PRIVATE by default (isPublic: false)
+- Publishing sets isPublic: true, generates a slug, and sets publishedAt timestamp
+- Published projects appear in community gallery at /dashboard/discover
+- Public projects are viewable at /p/[slug] with full metadata and comments
+- Auth-gated discovery prevents anonymous browsing of published projects
+
+KEY FINDINGS:
+
+1. WORKSPACE VISIBILITY (WORKING)
+   Location: /src/types/index.ts, /src/services/firebaseDatabase.ts
+   Status: Properly implemented
+   - Private by default
+   - Publish generates URL slug
+   - Unpublish removes from gallery
+   - Firestore rules enforce ownership
+
+2. PUBLISH/UNPUBLISH FLOW (WORKING)
+   Location: /src/components/workspace/QuickPublishPanel.tsx
+            /src/stores/workspaceStore.ts
+            /src/services/firebaseDatabase.ts
+   Status: Complete and functional
+   - 5-step publish wizard (basics → media → links → community → team → publish)
+   - Unpublish hidden in expandable menu
+   - Uses transactions for atomicity
+   - Proper error handling and user feedback
+
+3. COMMUNITY GALLERY (WORKING)
+   Location: /app/(app)/dashboard/discover/components/GalleryScreen.tsx
+   Status: Functional but incomplete
+   - Filters by category, stage, location
+   - Pagination with cursor support
+   - Peer matching algorithm exists but not displayed
+   - Sorting: recent, trending, popular, comments
+
+4. PUBLIC PROJECT PAGES (PARTIALLY BROKEN)
+   Location: /app/(public)/p/[slug]/
+   Status: Page renders but missing showcase data
+   - SSR with proper SEO metadata
+   - Open Graph images for social sharing
+   - View tracking implemented
+   - Missing UI for: gives/asks, team, acknowledgments
+   - Uses v2 components that may not be complete
+
+5. SHOWCASE FEATURES (PARTIALLY IMPLEMENTED)
+   Location: /src/types/index.ts (Workspace type)
+   Status: Data model complete but UI incomplete
+   
+   Implemented:
+   - Cover image and screenshots
+   - Project links (demo, GitHub, website)
+   - Creator attribution
+   - Comments section
+   - Views/appreciations/comment count
+   
+   Missing:
+   - Give/ask display on public page
+   - Team member display
+   - Acknowledgments display
+   - Analytics dashboard for creators
+   - Impact metrics (users, revenue, waitlist)
+
+6. PEER EXCHANGE (INCOMPLETE)
+   Location: /src/stores/galleryStore.ts
+            /src/components/workspace/QuickPublishPanel.tsx
+   Status: Matching algorithm exists but not used
+   - Gives/asks fields properly stored
+   - Matching calculation implemented
+   - BUT: Not displayed in gallery results
+   - Filtering for gives/asks not exposed in UI
+
+7. CLASS/STUDENT FUNCTIONALITY (INFRASTRUCTURE ONLY)
+   Location: /firestore.rules, /src/types/index.ts, /src/stores/workspaceStore.ts
+   Status: Database rules defined, zero UI implementation
+   - classCode field exists but never used
+   - assignClassCode() function exists but never called
+   - Teacher/student Firestore rules complete
+   - Assignment/submission rules complete
+   - DEFERRED TO '26 LAUNCH per project scope
+
+CRITICAL ISSUES:
+1. Public project page not displaying full showcase metadata
+2. Give/ask matching calculated but not visible to users
+3. No way for teachers to assign projects to classes
+4. Impact metrics fields defined but never displayed
+
+CODE LOCATIONS:
+
+Core Publishing:
+- /src/services/firebaseDatabase.ts:525-669 (Firebase publish/unpublish)
+- /src/stores/workspaceStore.ts:403-513 (Store actions)
+- /src/components/workspace/QuickPublishPanel.tsx:1-1618 (UI)
+
+Visibility & Security:
+- /firestore.rules:56-81 (Access control)
+- /src/types/index.ts:143-388 (Workspace type definition)
+
+Discovery:
+- /app/(app)/dashboard/discover/components/GalleryScreen.tsx (Gallery)
+- /src/stores/galleryStore.ts (Gallery state)
+- /src/services/firebaseDatabase.ts:875-984 (Public query methods)
+
+Public Pages:
+- /app/(public)/p/[slug]/page.tsx (SSR entry point)
+- /app/(public)/p/[slug]/PublicProjectDetailScreen.tsx (View tracking)
+- /src/components/projects/v2/ProjectDetailPage.tsx (Rendering)
+
+Class Infrastructure:
+- /firestore.rules:83-142
+- /src/types/index.ts:191
+- /src/stores/workspaceStore.ts:776-816
+
+RECOMMENDATIONS:
+
+HIGH PRIORITY:
+1. Complete public project page v2 component to show all fields
+2. Display matched projects in gallery (gives/asks)
+3. Add creator analytics dashboard
+
+MEDIUM PRIORITY:
+4. Implement class assignment UI
+5. Enable give/ask filtering in gallery
+6. Add comment notifications
+7. Remove deprecated projectType field
+
+LOW PRIORITY:
+8. Implement impact metrics display
+9. Add advanced SEO features
+10. Improve accessibility
+
+Full audit report saved to: /PUBLIC_PRIVATE_AUDIT.md

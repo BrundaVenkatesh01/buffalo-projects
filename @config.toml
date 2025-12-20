@@ -1,0 +1,18 @@
+# Playwright MCP Server Configuration for Claude Desktop
+# This file should be placed in your home directory as @config.toml
+# Or in Claude Desktop's config directory depending on your setup
+
+# Option 1: Use the official @playwright/mcp package (recommended)
+# This works out of the box and requires no additional setup
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest"]
+# Optional: Set working directory to your project root
+# env = { "PWD" = "/Users/laneyfraass/Buffalo-Projects" }
+
+# Option 2: Use the custom local server (for project-specific tools)
+# Uncomment below and comment out Option 1 to use the custom server
+# [mcp_servers.playwright-custom]
+# command = "node"
+# args = ["/Users/laneyfraass/Buffalo-Projects/tools/playwright-mcp/server.mjs"]
+# env = { "PWD" = "/Users/laneyfraass/Buffalo-Projects" }

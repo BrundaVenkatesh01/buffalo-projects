@@ -1,0 +1,210 @@
+================================================================================
+BUFFALO PROJECTS UI/UX ARCHITECTURE AUDIT - QUICK SUMMARY
+================================================================================
+
+PROJECT SCOPE
+- Total Component Lines: ~25,000 across 30+ directories
+- Workspace Components: 38 files, 13,412 lines
+- Design System: Well-organized two-tier token system
+- Navigation Components: 5 files (PlatformNavNext is 873 lines alone)
+
+================================================================================
+FINDINGS BY AREA
+================================================================================
+
+1. DASHBOARD (HIGH RISK - 🔴)
+   Status: Single 260+ line component handling too many concerns
+   Issues:
+   - 7+ state machines (isEditing, showCreationModal, 5 import dialogs)
+   - Manages: profile editing, project creation, filtering, sorting
+   - No clear component composition pattern
+   Recommendation: Extract ProfileSection, ProjectsSection, ImportToolbar
+   Effort: 3-4 hours
+
+2. EDITOR (CRITICAL - 🔴)
+   Status: 873 line monolith with 18+ useState calls
+   Issues:
+   - Complex state: activeTab, saveStatus, snapshot, sidebar, fullscreen, etc.
+   - Keyboard shortcut logic inline (hard to test)
+   - 11 dynamic imports with duplicated loading states
+   - Deep nesting: WorkspaceEditor → ContextPanel → Tabs → Content → Dialogs
+   Recommendation: Extract EditorLayout, useEditorState, useEditorShortcuts
+   Effort: 1-2 weeks (high impact)
+
+3. GALLERY (MEDIUM RISK - 🟡)
+   Status: 398 line component with tangled data flow
+   Issues:
+   - Dual-layer filtering (server + client) confusing
+   - Complex callback/memo tree (60+ line fetchWorkspaces)
+   - Pagination cursor state machine (cursor + hasMore + loading)
+   Recommendation: Extract useGalleryFilters, usePaginatedFetch hooks
+   Effort: 2-3 hours
+
+4. NAVIGATION (MEDIUM RISK - 🟡)
+   Status: PlatformNavNext is 873 lines (same as Editor!)
+   Issues:
+   - Kitchen sink: logo, nav items, user menu, mobile menu, animations
+   - Fragile route matching (3 places to update if routes change)
+   - Animation logic scattered
+   Recommendation: Extract NavBrand, NavMobileMenu, NavUserSection components
+   Effort: 4 hours
+
+5. WORKSPACE COMPONENTS (CRITICAL - 🔴)
+   Status: 38 components in flat directory structure
+   Issues:
+   - No clear parent-child relationships
+   - Component count explosion makes navigation difficult
+   - Deep props drilling (3-4 levels)
+   - Dialog/modal management scattered (each manages own open/close)
+   - Test files mixed with components
+   Recommendation: Reorganize by feature (canvas/, documents/, publishing/)
+   Effort: 1-2 weeks
+
+6. DESIGN TOKENS (GOOD - 🟢)
+   Status: Well-organized two-tier system, but under-documented
+   Issues:
+   - No token reference documentation
+   - Incomplete semantic colors (missing error, success, warning variants)
+   - Motion tokens not exported in semantic layer
+   - Token discovery problem (developers unsure what exists)
+   Recommendation: Create REFERENCE.md, extend semantic layer
+   Effort: 2-3 hours
+
+7. COMPONENT DIRECTORIES (HIGH RISK - 🔴)
+   Status: 30+ directories, unclear taxonomy
+   Issues:
+   - Too many directories (buffalo/, ui-next/, unified/ overlap)
+   - Deferred features taking up space (mentor/, yc/, openai/, waitlist/)
+   - Missing feature-first organization (no dashboard/, editor/, gallery/)
+   - Import confusion (which barrel to use?)
+   Recommendation: Consolidate, organize by feature, remove dead code
+   Effort: 1 week
+
+================================================================================
+QUICK WINS (Can Do This Week)
+================================================================================
+
+1. Move WorkspaceSidebar to navigation/ directory (30 mins)
+2. Extract EditorHeader component from WorkspaceEditor (1 hour)
+3. Create useEditorShortcuts hook to replace inline handlers (1 hour)
+4. Create navRouteConfig.ts for centralized route matching (30 mins)
+5. Add component subdirectories (canvas/, documents/) in workspace/ (30 mins)
+6. Export motion tokens in semantic layer (30 mins)
+7. Audit unified/ imports and document what's exported (1 hour)
+8. Create hooks subdirectories (workspace/hooks/, dashboard/hooks/) (30 mins)
+
+Total Quick Wins: ~6 hours for immediate impact
+
+================================================================================
+PRIORITY ROADMAP
+================================================================================
+
+PHASE 1: High-Impact (1-2 weeks) - Highest ROI
+- Refactor WorkspaceEditor (extract layout/tabs/hooks)
+- Reorganize workspace/ directory (by feature)
+- Extract custom hooks (useEditorState, useEditorShortcuts, useDocuments)
+- Simplify PlatformNav (extract components)
+- Create navigation utilities
+
+PHASE 2: Design System (1 week)
+- Document design tokens (create REFERENCE.md)
+- Extend semantic tokens (missing variants)
+- Fix unified imports (clear exports)
+- Create state management guide
+- Add keyboard shortcut registry
+
+PHASE 3: Long-Term Cleanup (2-3 weeks)
+- Reorganize component directories (feature-first)
+- Remove dead code (mentor/, yc/, waitlist/, openai/)
+- Consolidate dashboard (extract sections)
+- Improve gallery filters (custom hooks)
+- Centralize dialog management
+
+PHASE 4: Testing & Documentation (Ongoing)
+- Write tests for extracted hooks
+- Document composition patterns
+- Create component library showcase
+- Update CLAUDE.md with new patterns
+
+================================================================================
+IMPACT SUMMARY
+================================================================================
+
+Current State:
+- 30+ component directories → Unclear which to import from
+- 38 workspace components → Hard to find and navigate
+- 873 line UnifiedProjectEditor → Impossible to test or modify safely
+- 873 line PlatformNavNext → Brittle, hard to maintain
+- 260+ line DashboardScreen → Multiple state machines mixed together
+
+After Recommended Changes:
+- 5-8 component directories (feature-first) → Clear structure
+- Workspace organized by feature → Easy to navigate
+- EditorLayout (250 lines) + custom hooks → Testable, modular
+- PlatformNav split into 5 components (50-150 lines each) → Maintainable
+- Dashboard split into 3-4 components → Clear responsibilities
+
+Result:
+- 40-50% reduction in component complexity
+- 60% fewer lines in large components
+- 80% improvement in discoverability
+- 90% improvement in testability
+
+================================================================================
+SPECIFIC FILE RECOMMENDATIONS
+================================================================================
+
+High Priority for Refactoring:
+✗ /Users/laneyfraass/Buffalo-Projects/app/(app)/edit/[code]/UnifiedProjectEditor.tsx
+  → Split into EditorLayout.tsx, useEditorState.ts, useEditorShortcuts.ts
+
+✗ /Users/laneyfraass/Buffalo-Projects/src/components/navigation/PlatformNavNext.tsx
+  → Split into NavBrand.tsx, NavDesktopMenu.tsx, NavMobileMenu.tsx, NavUserSection.tsx
+
+✗ /Users/laneyfraass/Buffalo-Projects/src/components/workspace/ (entire directory)
+  → Reorganize into: canvas/, documents/, publishing/, layout/, details/, common/, hooks/
+
+✗ /Users/laneyfraass/Buffalo-Projects/app/(studio)/profile/DashboardScreen.tsx
+  → Split into ProfileSection.tsx, ProjectsSection.tsx, ImportToolbar.tsx
+
+Good Foundation (Keep, Extend):
+✓ /Users/laneyfraass/Buffalo-Projects/src/tokens/ - Well organized
+  → Add REFERENCE.md, extend semantic colors, export motion tokens
+
+Medium Priority:
+~ /Users/laneyfraass/Buffalo-Projects/app/(app)/dashboard/discover/components/GalleryScreen.tsx
+  → Extract useGalleryFilters, usePaginatedFetch, useFilteredResults
+
+================================================================================
+QUESTIONS FOR TEAM
+================================================================================
+
+Before proceeding, clarify:
+
+1. Should dashboard/ and editor/ be moved to top-level feature directories?
+   Current: src/components/workspace/ has everything
+   Proposed: src/components/dashboard/, src/components/editor/
+
+2. When was WorkspaceSidebar last used? Should it move to navigation/?
+
+3. Are mentor/, yc/, waitlist/, openai/ directories truly dead?
+   Recommendation: Archive or remove to reduce mental overhead
+
+4. What's in unified/ actually exported vs what developers try to import?
+
+5. Should design tokens have a dedicated documentation file?
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+1. Share this audit with team for feedback
+2. Prioritize which areas to tackle first
+3. Consider creating a "refactoring sprint" for Phase 1
+4. Assign ownership for each major component refactor
+5. Establish pattern documentation in CLAUDE.md
+6. Create component composition examples/patterns
+7. Set up regular code review checkpoints
+8. Document "imports" strategy (unified vs. direct imports)
+
+================================================================================

@@ -1,0 +1,49 @@
+name: E2E (Emulator)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  e2e-emulator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      NEXT_PUBLIC_FIREBASE_EMULATOR: "1"
+      FIRESTORE_EMULATOR_HOST: "localhost:8080"
+      FIREBASE_AUTH_EMULATOR_URL: "http://localhost:9099"
+      FIREBASE_STORAGE_EMULATOR_HOST: "localhost:9199"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Install Firebase CLI
+        run: npm i -g firebase-tools@13
+
+      - name: Start Firebase emulators
+        run: |
+          firebase emulators:start --only firestore,storage,auth --project demo-buffalo --quiet &
+          echo $! > emulator.pid
+          sleep 5
+
+      - name: Seed emulator data
+        run: npm run seed:emulator
+
+      - name: Run E2E (Chromium)
+        run: npx playwright test --project=chromium
+
+      - name: Stop emulators
+        if: always()
+        run: |
+          if [ -f emulator.pid ]; then kill $(cat emulator.pid) || true; fi

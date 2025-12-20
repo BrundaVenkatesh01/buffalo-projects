@@ -1,0 +1,26 @@
+{
+  "name": "Buffalo Projects - Student Entrepreneurship Platform",
+  "short_name": "Buffalo Projects",
+  "description": "Free entrepreneurship tools for Buffalo students - Business Model Canvas, Pivot Tracking, and more",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "business", "productivity"],
+  "prefer_related_applications": false,
+  "related_applications": []
+}

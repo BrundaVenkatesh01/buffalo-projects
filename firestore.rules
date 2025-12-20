@@ -1,0 +1,341 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(ownerId) {
+      return isAuthenticated() && request.auth.uid == ownerId;
+    }
+
+    function isCollaborator(collaborators) {
+      return isAuthenticated() &&
+             collaborators != null &&
+             request.auth.uid in collaborators;
+    }
+
+    function isProjectOwner(projectId) {
+      return isAuthenticated() &&
+             projectId is string &&
+             exists(/databases/$(database)/documents/workspaces/$(projectId)) &&
+             get(/databases/$(database)/documents/workspaces/$(projectId)).data.ownerId == request.auth.uid;
+    }
+
+    function projectIsPublic(projectId) {
+      return projectId is string &&
+             exists(/databases/$(database)/documents/workspaces/$(projectId)) &&
+             get(/databases/$(database)/documents/workspaces/$(projectId)).data.isPublic == true;
+    }
+
+    function hasWorkspaceAccess(workspace) {
+      return isOwner(workspace.ownerId) ||
+             workspace.isPublic == true ||
+             isCollaborator(workspace.collaborators) ||
+             isGroupLeader(workspace.classCode);
+    }
+
+    // Check if user is the leader of the group this workspace belongs to
+    // This function must be defensive - invalid classCode values should not break access
+    function isGroupLeader(groupCode) {
+      // Early return false for null/empty classCode - most workspaces won't have this
+      let hasValidCode = groupCode != null && groupCode is string && groupCode.size() > 0;
+      // Only check group if code is valid and document exists
+      let groupExists = hasValidCode && exists(/databases/$(database)/documents/groups/$(groupCode));
+      // Only access data if group exists to avoid errors
+      return groupExists &&
+             get(/databases/$(database)/documents/groups/$(groupCode)).data.ownerId == request.auth.uid;
+    }
+
+    function isTeacher(teacherCode) {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/teachers/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/teachers/$(request.auth.uid)).data.teacherCode == teacherCode;
+    }
+
+    // User profiles - users can only read/write their own profile
+    match /users/{userId} {
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+
+      // Allow reading basic profile info for collaboration features
+      allow read: if isAuthenticated() &&
+                      request.auth.uid != userId &&
+                      resource.data.keys().hasOnly(['displayName', 'photoURL', 'firstName', 'lastName']);
+    }
+
+    // Workspaces - complex access control
+    match /workspaces/{workspaceCode} {
+      // Read access: owner, collaborators, or public workspaces
+      // Note: This will deny reads for non-existent documents (returns null)
+      // The client should handle "new" workspace code before calling Firestore
+      allow read: if hasWorkspaceAccess(resource.data);
+
+      // Allow listing public workspaces (for gallery) - anyone can query public projects
+      allow list: if request.query.limit <= 100;
+
+      // Create: authenticated users only, must set themselves as owner
+      allow create: if isAuthenticated() &&
+                        request.auth.uid == request.resource.data.ownerId &&
+                        request.resource.data.keys().hasAll(['ownerId', 'projectName', 'createdAt', 'lastModified']);
+
+      // Update: only owner can modify workspace document
+      // Support both ownerId and userId fields for backwards compatibility
+      allow update: if isAuthenticated() && (
+        resource.data.ownerId == request.auth.uid ||
+        resource.data.userId == request.auth.uid ||
+        resource.data.creatorUid == request.auth.uid
+      );
+
+      // Delete: only owner
+      allow delete: if isOwner(resource.data.ownerId);
+    }
+
+    // Groups - leader can manage, members can read
+    match /groups/{groupCode} {
+      // Read: owner (leader) or members with workspace in the group
+      allow read: if isAuthenticated() && (
+        resource.data.ownerId == request.auth.uid ||
+        // Members can read group info
+        request.auth.uid in resource.data.memberIds
+      );
+
+      // Create: any authenticated user can create a group
+      allow create: if isAuthenticated() &&
+                        request.auth.uid == request.resource.data.ownerId &&
+                        request.resource.data.keys().hasAll(['ownerId', 'name', 'code', 'createdAt']);
+
+      // Update: only the owner (leader)
+      allow update: if isAuthenticated() &&
+                        resource.data.ownerId == request.auth.uid;
+
+      // Delete: only the owner
+      allow delete: if isAuthenticated() &&
+                        resource.data.ownerId == request.auth.uid;
+    }
+
+    // Classes - teacher management
+    match /classes/{classCode} {
+      // Read: teacher who owns the class or students in the class
+      allow read: if isAuthenticated() && (
+        resource.data.ownerId == request.auth.uid ||
+        request.auth.uid in resource.data.studentIds ||
+        isTeacher(resource.data.teacherCode)
+      );
+
+      // Create/Update/Delete: only the teacher who owns the class
+      allow create, update, delete: if isAuthenticated() &&
+                                        request.auth.uid == request.resource.data.ownerId;
+    }
+
+    // Teacher profiles
+    match /teachers/{teacherId} {
+      allow read, write: if isAuthenticated() && request.auth.uid == teacherId;
+    }
+
+    // Assignments within classes
+    match /classes/{classCode}/assignments/{assignmentId} {
+      // Read: students in the class or the teacher
+      allow read: if isAuthenticated() && (
+        exists(/databases/$(database)/documents/classes/$(classCode)) &&
+        (get(/databases/$(database)/documents/classes/$(classCode)).data.ownerId == request.auth.uid ||
+         request.auth.uid in get(/databases/$(database)/documents/classes/$(classCode)).data.studentIds)
+      );
+
+      // Create/Update/Delete: only the teacher
+      allow create, update, delete: if isAuthenticated() &&
+        exists(/databases/$(database)/documents/classes/$(classCode)) &&
+        get(/databases/$(database)/documents/classes/$(classCode)).data.ownerId == request.auth.uid;
+    }
+
+    // Student submissions
+    match /submissions/{submissionId} {
+      // Read: student who made the submission or the teacher
+      allow read: if isAuthenticated() && (
+        resource.data.studentId == request.auth.uid ||
+        (exists(/databases/$(database)/documents/classes/$(resource.data.classCode)) &&
+         get(/databases/$(database)/documents/classes/$(resource.data.classCode)).data.ownerId == request.auth.uid)
+      );
+
+      // Create: student creating their own submission
+      allow create: if isAuthenticated() &&
+                        request.auth.uid == request.resource.data.studentId;
+
+      // Update: student updating their own submission (before deadline) or teacher grading
+      allow update: if isAuthenticated() && (
+        (request.auth.uid == resource.data.studentId &&
+         resource.data.status == 'draft') ||
+        (exists(/databases/$(database)/documents/classes/$(resource.data.classCode)) &&
+         get(/databases/$(database)/documents/classes/$(resource.data.classCode)).data.ownerId == request.auth.uid)
+      );
+
+      // Delete: student deleting their own draft submission
+      allow delete: if isAuthenticated() &&
+                        request.auth.uid == resource.data.studentId &&
+                        resource.data.status == 'draft';
+    }
+
+    match /comments/{commentId} {
+      // Read: anyone can read comments (comments are on public projects only)
+      allow read: if true;
+
+      // Create: authenticated users can comment on public projects
+      allow create: if isAuthenticated() &&
+                        // Project must be public
+                        projectIsPublic(request.resource.data.projectId) &&
+                        // User must be the comment author
+                        request.auth.uid == request.resource.data.userId &&
+                        // Required fields validation
+                        request.resource.data.projectId is string &&
+                        request.resource.data.content is string &&
+                        request.resource.data.content.size() > 0 &&
+                        request.resource.data.content.size() <= 5000 &&
+                        // Timestamp must be set to server time
+                        request.resource.data.createdAt is timestamp &&
+                        request.resource.data.updatedAt is timestamp &&
+                        request.resource.data.createdAt == request.time &&
+                        request.resource.data.updatedAt == request.time &&
+                        // isEdited must start as false
+                        request.resource.data.isEdited == false &&
+                        // Display name must match authenticated user
+                        request.resource.data.userDisplayName == request.auth.token.name &&
+                        // Mentions array validation (max 10 mentions)
+                        (request.resource.data.mentions is list &&
+                         request.resource.data.mentions.size() <= 10) &&
+                        // Photo URL validation (must be from Firebase or Gravatar if present)
+                        (!request.resource.data.keys().hasAny(['userPhotoURL']) ||
+                         request.resource.data.userPhotoURL.matches('https://(firebasestorage\\.googleapis\\.com|.*\\.googleusercontent\\.com|www\\.gravatar\\.com)/.*'));
+
+      // Update: only comment owner can edit their own comments
+      allow update: if isAuthenticated() &&
+                        // Must be the comment owner
+                        request.auth.uid == resource.data.userId &&
+                        // Cannot change immutable fields
+                        resource.data.projectId == request.resource.data.projectId &&
+                        resource.data.userId == request.resource.data.userId &&
+                        resource.data.createdAt == request.resource.data.createdAt &&
+                        resource.data.userDisplayName == request.resource.data.userDisplayName &&
+                        // Content validation
+                        request.resource.data.content is string &&
+                        request.resource.data.content.size() > 0 &&
+                        request.resource.data.content.size() <= 5000 &&
+                        // Must update timestamp
+                        request.resource.data.updatedAt is timestamp &&
+                        request.resource.data.updatedAt == request.time &&
+                        // Must set isEdited flag if content changed
+                        (resource.data.content == request.resource.data.content ||
+                         request.resource.data.isEdited == true) &&
+                        // Mentions array validation
+                        (request.resource.data.mentions is list &&
+                         request.resource.data.mentions.size() <= 10);
+
+      // Delete: comment owner OR project owner can delete comments
+      allow delete: if isAuthenticated() && (
+                        // Comment owner can delete their own comments
+                        request.auth.uid == resource.data.userId ||
+                        // Project owner can delete spam comments on their projects
+                        isProjectOwner(resource.data.projectId)
+                      );
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() &&
+                      resource.data.userId == request.auth.uid;
+
+      allow create: if isAuthenticated() &&
+                        request.resource.data.actorId == request.auth.uid &&
+                        request.resource.data.userId is string &&
+                        request.resource.data.userId != request.auth.uid;
+
+      allow update: if isAuthenticated() &&
+                        resource.data.userId == request.auth.uid &&
+                        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'readAt']) &&
+                        request.resource.data.read == true;
+
+      allow delete: if false;
+    }
+
+    // Analytics and usage data - read-only for users, write for system
+    match /analytics/{document=**} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only server-side functions can write analytics
+    }
+
+    // User activity logs - users can only read their own
+    match /user_activity/{userId}/logs/{logId} {
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      allow write: if false; // Only server-side logging
+    }
+
+    // System configuration - read-only for authenticated users
+    match /config/{configDoc} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only admin functions can update config
+    }
+
+    // Notifications - users can read their own
+    match /notifications/{userId}/messages/{messageId} {
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      allow update: if isAuthenticated() &&
+                        request.auth.uid == userId &&
+                        // Only allow marking as read
+                        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isRead', 'readAt']);
+      allow write: if false; // Created by cloud functions
+    }
+
+    // Feature Requests - authenticated users can create, admin can read all
+    match /feature-requests/{requestId} {
+      // Anyone authenticated can read (to see if their request was already submitted)
+      allow read: if isAuthenticated();
+
+      // Create: authenticated users can submit feature requests
+      allow create: if isAuthenticated() &&
+                        request.resource.data.userId is string &&
+                        request.resource.data.category is string &&
+                        request.resource.data.request is string &&
+                        request.resource.data.request.size() > 0 &&
+                        request.resource.data.request.size() <= 2000 &&
+                        request.resource.data.status == 'new' &&
+                        request.resource.data.createdAt is timestamp;
+
+      // Update/Delete: only admins (disabled for now)
+      allow update, delete: if false;
+    }
+
+    // TwentySix Resources - Volunteer sign-ups for '26 program
+    match /twentySixResources/{resourceId} {
+      // Read: Only admins can read all resources (privacy protection)
+      // Regular users cannot see who else has signed up
+      allow read: if false; // Will be updated when admin roles are implemented
+
+      // Create: ANYONE can volunteer as a resource (no auth required)
+      // This allows people to sign up even if they don't have an account yet
+      allow create: if // Required fields validation
+                        request.resource.data.name is string &&
+                        request.resource.data.name.size() > 0 &&
+                        request.resource.data.name.size() <= 100 &&
+                        request.resource.data.email is string &&
+                        request.resource.data.email.size() > 0 &&
+                        request.resource.data.email.size() <= 255 &&
+                        request.resource.data.email.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$') &&
+                        request.resource.data.expertise is string &&
+                        request.resource.data.expertise.size() > 0 &&
+                        request.resource.data.expertise.size() <= 500 &&
+                        // Status must be 'pending' on creation
+                        request.resource.data.status == 'pending' &&
+                        // Timestamps must be set
+                        request.resource.data.createdAt is timestamp &&
+                        request.resource.data.createdAt == request.time;
+
+      // Update/Delete: Only admins (for managing resources, marking as contacted, etc.)
+      allow update, delete: if false; // Will be updated when admin roles are implemented
+    }
+
+    // Catch-all deny rule
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,1619 @@
+{
+  "numTotalTestSuites": 114,
+  "numPassedTestSuites": 114,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 136,
+  "numPassedTests": 127,
+  "numFailedTests": 0,
+  "numPendingTests": 9,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1762235885627,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["Domain public API"],
+          "fullName": "Domain public API exposes value objects and entities",
+          "status": "passed",
+          "title": "exposes value objects and entities",
+          "duration": 2.8264159999999947,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Domain public API"],
+          "fullName": "Domain public API provides WorkspaceService constructor",
+          "status": "passed",
+          "title": "provides WorkspaceService constructor",
+          "duration": 0.16533299999991868,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235893641,
+      "endTime": 1762235893644.1653,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/domain/index.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["useNotifications"],
+          "fullName": "useNotifications subscribes and updates unread count",
+          "status": "passed",
+          "title": "subscribes and updates unread count",
+          "duration": 49.03720899999985,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["useNotifications"],
+          "fullName": "useNotifications marks all as read via service",
+          "status": "passed",
+          "title": "marks all as read via service",
+          "duration": 7.7251249999999345,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235889833,
+      "endTime": 1762235889889.725,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/hooks/useNotifications.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["usePublicProjects"],
+          "fullName": "usePublicProjects loads first page and sets hasMore/cursor",
+          "status": "passed",
+          "title": "loads first page and sets hasMore/cursor",
+          "duration": 12.543499999999995,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["usePublicProjects"],
+          "fullName": "usePublicProjects appends unique on loadMore",
+          "status": "passed",
+          "title": "appends unique on loadMore",
+          "duration": 2.7407909999999447,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235890946,
+      "endTime": 1762235890960.7407,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/hooks/usePublicProjects.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["localGroupService"],
+          "fullName": "localGroupService creates a group with unique code",
+          "status": "passed",
+          "title": "creates a group with unique code",
+          "duration": 2.1424580000000333,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["localGroupService"],
+          "fullName": "localGroupService adds members and keeps latest activity date",
+          "status": "passed",
+          "title": "adds members and keeps latest activity date",
+          "duration": 0.6423750000000155,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235892731,
+      "endTime": 1762235892734.6423,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/localGroupService.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["LocalWorkspaceService"],
+          "fullName": "LocalWorkspaceService creates and retrieves a workspace locally",
+          "status": "passed",
+          "title": "creates and retrieves a workspace locally",
+          "duration": 3.1359999999999673,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["LocalWorkspaceService"],
+          "fullName": "LocalWorkspaceService returns all workspaces sorted by lastModified",
+          "status": "passed",
+          "title": "returns all workspaces sorted by lastModified",
+          "duration": 0.7175419999999804,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["LocalWorkspaceService"],
+          "fullName": "LocalWorkspaceService tracks pending sync state",
+          "status": "passed",
+          "title": "tracks pending sync state",
+          "duration": 0.42250000000001364,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235891461,
+      "endTime": 1762235891464.7175,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/localWorkspaceService.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["toPublicProjectFields"],
+          "fullName": "toPublicProjectFields includes only approved public fields",
+          "status": "passed",
+          "title": "includes only approved public fields",
+          "duration": 1.745541000000003,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["toPublicProjectFields"],
+          "fullName": "toPublicProjectFields handles description fallback correctly",
+          "status": "passed",
+          "title": "handles description fallback correctly",
+          "duration": 0.42754200000001674,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235893538,
+      "endTime": 1762235893540.4275,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/utils/publicProjectMapping.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["slugGenerator", "createSlug"],
+          "fullName": "slugGenerator createSlug generates kebab-case slug",
+          "status": "passed",
+          "title": "generates kebab-case slug",
+          "duration": 1.5920839999999998,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["slugGenerator", "createSlug"],
+          "fullName": "slugGenerator createSlug strips diacritics and punctuation",
+          "status": "passed",
+          "title": "strips diacritics and punctuation",
+          "duration": 0.33670900000004167,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["slugGenerator", "createSlug"],
+          "fullName": "slugGenerator createSlug falls back to random id when input empty",
+          "status": "passed",
+          "title": "falls back to random id when input empty",
+          "duration": 2.288667000000032,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["slugGenerator", "createSlug"],
+          "fullName": "slugGenerator createSlug limits slug length",
+          "status": "passed",
+          "title": "limits slug length",
+          "duration": 0.42691599999989194,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["slugGenerator", "withRandomSuffix"],
+          "fullName": "slugGenerator withRandomSuffix appends random suffix when under length",
+          "status": "passed",
+          "title": "appends random suffix when under length",
+          "duration": 0.7374170000000504,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["slugGenerator", "withRandomSuffix"],
+          "fullName": "slugGenerator withRandomSuffix trims slug when exceeding length cap",
+          "status": "passed",
+          "title": "trims slug when exceeding length cap",
+          "duration": 0.31979200000000674,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235892130,
+      "endTime": 1762235892136.3198,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/utils/slugGenerator.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["CommentInput"],
+          "fullName": "CommentInput shows mention suggestions and inserts handle",
+          "status": "passed",
+          "title": "shows mention suggestions and inserts handle",
+          "duration": 424.949083,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["CommentInput"],
+          "fullName": "CommentInput toggles preview mode",
+          "status": "passed",
+          "title": "toggles preview mode",
+          "duration": 310.6039579999999,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235887316,
+      "endTime": 1762235888051.604,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/components/comments/CommentInput.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["CommentThread"],
+          "fullName": "CommentThread requires auth and calls onRequireAuth when signed out UI is used",
+          "status": "passed",
+          "title": "requires auth and calls onRequireAuth when signed out UI is used",
+          "duration": 198.83291600000007,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235890382,
+      "endTime": 1762235890580.833,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/components/comments/CommentThread.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["PlatformNav"],
+          "fullName": "PlatformNav renders public navigation and auth actions for guests",
+          "status": "passed",
+          "title": "renders public navigation and auth actions for guests",
+          "duration": 1008.735625,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PlatformNav"],
+          "fullName": "PlatformNav renders authenticated state with dashboard link and actions",
+          "status": "passed",
+          "title": "renders authenticated state with dashboard link and actions",
+          "duration": 244.9738339999999,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235887647,
+      "endTime": 1762235888900.9739,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/components/navigation/PlatformNav.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["PlatformNavNext quick create"],
+          "fullName": "PlatformNavNext quick create Create button routes to /studio/new",
+          "status": "passed",
+          "title": "Create button routes to /studio/new",
+          "duration": 305.9883340000001,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235890310,
+      "endTime": 1762235890615.9883,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/components/navigation/PlatformNavNext.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["NotificationDropdown"],
+          "fullName": "NotificationDropdown opens dropdown and marks all as read",
+          "status": "passed",
+          "title": "opens dropdown and marks all as read",
+          "duration": 946.9678749999998,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235887376,
+      "endTime": 1762235888322.9678,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/components/notifications/NotificationDropdown.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["PublishGate"],
+          "fullName": "PublishGate marks gate as pass when one-liner, ask, and featured evidence exist",
+          "status": "passed",
+          "title": "marks gate as pass when one-liner, ask, and featured evidence exist",
+          "duration": 0.8773329999999078,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PublishGate"],
+          "fullName": "PublishGate collects missing requirements when gate is incomplete",
+          "status": "passed",
+          "title": "collects missing requirements when gate is incomplete",
+          "duration": 0.5997499999999718,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Ranking"],
+          "fullName": "Ranking applies default weights to compute rankings",
+          "status": "passed",
+          "title": "applies default weights to compute rankings",
+          "duration": 0.11099999999999,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Ranking"],
+          "fullName": "Ranking allows weight overrides for experimentation",
+          "status": "passed",
+          "title": "allows weight overrides for experimentation",
+          "duration": 0.21358299999997143,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235892673,
+      "endTime": 1762235892675.2136,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/domain/platform/types.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["PivotDetectionService", "detectPivot"],
+          "fullName": "PivotDetectionService detectPivot should detect no pivot when canvases are identical",
+          "status": "passed",
+          "title": "should detect no pivot when canvases are identical",
+          "duration": 0.6669580000000224,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PivotDetectionService", "detectPivot"],
+          "fullName": "PivotDetectionService detectPivot should detect minor pivot when 1-2 fields change",
+          "status": "passed",
+          "title": "should detect minor pivot when 1-2 fields change",
+          "duration": 1.1123340000000326,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PivotDetectionService", "detectPivot"],
+          "fullName": "PivotDetectionService detectPivot should detect major pivot when 3-5 fields change",
+          "status": "passed",
+          "title": "should detect major pivot when 3-5 fields change",
+          "duration": 0.535959000000048,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PivotDetectionService", "detectPivot"],
+          "fullName": "PivotDetectionService detectPivot should detect complete pivot when 6+ fields change",
+          "status": "passed",
+          "title": "should detect complete pivot when 6+ fields change",
+          "duration": 0.21154199999989487,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PivotDetectionService", "detectPivot"],
+          "fullName": "PivotDetectionService detectPivot should include version references",
+          "status": "passed",
+          "title": "should include version references",
+          "duration": 0.08079099999997652,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PivotDetectionService", "detectPivot"],
+          "fullName": "PivotDetectionService detectPivot should generate unique pivot ID",
+          "status": "passed",
+          "title": "should generate unique pivot ID",
+          "duration": 0.22337500000003274,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235890914,
+      "endTime": 1762235890916.536,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/domain/services/PivotDetectionService.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["VersionService", "createSnapshot"],
+          "fullName": "VersionService createSnapshot should create a version snapshot with unique ID",
+          "status": "passed",
+          "title": "should create a version snapshot with unique ID",
+          "duration": 2.77804100000003,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["VersionService", "createSnapshot"],
+          "fullName": "VersionService createSnapshot should include timestamp",
+          "status": "passed",
+          "title": "should include timestamp",
+          "duration": 0.9401249999999663,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["VersionService", "createSnapshot"],
+          "fullName": "VersionService createSnapshot should clone the canvas data",
+          "status": "passed",
+          "title": "should clone the canvas data",
+          "duration": 0.7850419999999758,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["VersionService", "createSnapshot"],
+          "fullName": "VersionService createSnapshot should generate a snapshot description",
+          "status": "passed",
+          "title": "should generate a snapshot description",
+          "duration": 0.3702499999999418,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["VersionService", "createSnapshot"],
+          "fullName": "VersionService createSnapshot should handle empty canvas",
+          "status": "passed",
+          "title": "should handle empty canvas",
+          "duration": 0.19541599999990922,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["VersionService", "generateSnapshotDescription"],
+          "fullName": "VersionService generateSnapshotDescription should summarize filled fields",
+          "status": "passed",
+          "title": "should summarize filled fields",
+          "duration": 0.2997500000000173,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["VersionService", "generateSnapshotDescription"],
+          "fullName": "VersionService generateSnapshotDescription should handle partially filled canvas",
+          "status": "passed",
+          "title": "should handle partially filled canvas",
+          "duration": 0.2143749999999045,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235891439,
+      "endTime": 1762235891444.2998,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/domain/services/VersionService.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["authStore"],
+          "fullName": "authStore initializes with waitForAuthInit and subscribes to changes",
+          "status": "passed",
+          "title": "initializes with waitForAuthInit and subscribes to changes",
+          "duration": 3.9748749999999973,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["authStore"],
+          "fullName": "authStore signs in and updates state",
+          "status": "passed",
+          "title": "signs in and updates state",
+          "duration": 0.3314579999999978,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["authStore"],
+          "fullName": "authStore signs up and sets user",
+          "status": "passed",
+          "title": "signs up and sets user",
+          "duration": 0.772666000000072,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["authStore"],
+          "fullName": "authStore updates profile and persists",
+          "status": "passed",
+          "title": "updates profile and persists",
+          "duration": 1.4077910000000884,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["authStore"],
+          "fullName": "authStore signs out and clears user",
+          "status": "passed",
+          "title": "signs out and clears user",
+          "duration": 0.30654200000003584,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235892395,
+      "endTime": 1762235892401.4077,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/stores/__tests__/authStore.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["workspaceStore snapshot trimming"],
+          "fullName": "workspaceStore snapshot trimming keeps only last 50 versions",
+          "status": "passed",
+          "title": "keeps only last 50 versions",
+          "duration": 24.27004199999999,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235889930,
+      "endTime": 1762235889954.27,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/stores/__tests__/workspaceStore.snapshot.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["workspaceStore - offline CRUD"],
+          "fullName": "workspaceStore - offline CRUD creates a workspace locally and updates state",
+          "status": "passed",
+          "title": "creates a workspace locally and updates state",
+          "duration": 3.2055829999999332,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["workspaceStore - offline CRUD"],
+          "fullName": "workspaceStore - offline CRUD updates workspace fields and lastModified",
+          "status": "passed",
+          "title": "updates workspace fields and lastModified",
+          "duration": 0.38733300000001236,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["workspaceStore - offline CRUD"],
+          "fullName": "workspaceStore - offline CRUD loads workspaces from local service when offline",
+          "status": "passed",
+          "title": "loads workspaces from local service when offline",
+          "duration": 0.39037499999994907,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["workspaceStore - publish/unpublish offline"],
+          "fullName": "workspaceStore - publish/unpublish offline publishes and unpublishes a workspace locally",
+          "status": "passed",
+          "title": "publishes and unpublishes a workspace locally",
+          "duration": 1.4336249999998927,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["workspaceStore - snapshots and pivots"],
+          "fullName": "workspaceStore - snapshots and pivots creates snapshots and records a pivot when versions exist",
+          "status": "passed",
+          "title": "creates snapshots and records a pivot when versions exist",
+          "duration": 0.36504199999990306,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235891869,
+      "endTime": 1762235891874.4336,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/stores/__tests__/workspaceStore.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["commentService.createComment"],
+          "fullName": "commentService.createComment creates a comment, adjusts counts, and notifies recipients",
+          "status": "passed",
+          "title": "creates a comment, adjusts counts, and notifies recipients",
+          "duration": 2.6836249999998927,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["commentService.createComment"],
+          "fullName": "commentService.createComment falls back to authService when Firebase auth user is missing",
+          "status": "passed",
+          "title": "falls back to authService when Firebase auth user is missing",
+          "duration": 0.8539160000000265,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["commentService.createComment"],
+          "fullName": "commentService.createComment throws when content is empty after trimming",
+          "status": "passed",
+          "title": "throws when content is empty after trimming",
+          "duration": 0.7058749999999918,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["commentService.getCommentsByProject"],
+          "fullName": "commentService.getCommentsByProject maps Firestore comments to domain model with ISO timestamps",
+          "status": "passed",
+          "title": "maps Firestore comments to domain model with ISO timestamps",
+          "duration": 1.9475839999998925,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["commentService.subscribeToProjectComments"],
+          "fullName": "commentService.subscribeToProjectComments invokes listener with mapped comments on snapshot",
+          "status": "passed",
+          "title": "invokes listener with mapped comments on snapshot",
+          "duration": 0.8137920000000349,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["commentService.buildDefaultMentionSuggestions"],
+          "fullName": "commentService.buildDefaultMentionSuggestions deduplicates commenters and normalizes handles",
+          "status": "passed",
+          "title": "deduplicates commenters and normalizes handles",
+          "duration": 0.2309579999999869,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["commentService.buildDefaultMentionSuggestions"],
+          "fullName": "commentService.buildDefaultMentionSuggestions returns empty array when fetching comments fails",
+          "status": "passed",
+          "title": "returns empty array when fetching comments fails",
+          "duration": 2.4722090000000208,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["commentService.deleteComment"],
+          "fullName": "commentService.deleteComment removes comment and adjusts comment count",
+          "status": "passed",
+          "title": "removes comment and adjusts comment count",
+          "duration": 0.3399579999999105,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["commentService.updateComment"],
+          "fullName": "commentService.updateComment updates trimmed content, filters self mentions, and sets edited flag",
+          "status": "passed",
+          "title": "updates trimmed content, filters self mentions, and sets edited flag",
+          "duration": 0.5940829999999551,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235891234,
+      "endTime": 1762235891244.594,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/__tests__/commentService.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["emailService.sendCommentNotification"],
+          "fullName": "emailService.sendCommentNotification returns false when email not configured",
+          "status": "passed",
+          "title": "returns false when email not configured",
+          "duration": 2.531708999999978,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["emailService.sendCommentNotification"],
+          "fullName": "emailService.sendCommentNotification returns false when recipient profile missing or opts out",
+          "status": "passed",
+          "title": "returns false when recipient profile missing or opts out",
+          "duration": 0.890041999999994,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["emailService.sendCommentNotification"],
+          "fullName": "emailService.sendCommentNotification sends via Resend when configured",
+          "status": "passed",
+          "title": "sends via Resend when configured",
+          "duration": 1.4527090000000271,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235893418,
+      "endTime": 1762235893423.4526,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/__tests__/emailService.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["firebaseDatabase.getWorkspace access control"],
+          "fullName": "firebaseDatabase.getWorkspace access control returns null when user has no access",
+          "status": "passed",
+          "title": "returns null when user has no access",
+          "duration": 1.5254169999999476,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase.getWorkspace access control"],
+          "fullName": "firebaseDatabase.getWorkspace access control returns workspace when public",
+          "status": "passed",
+          "title": "returns workspace when public",
+          "duration": 0.29912500000000364,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase.getWorkspace access control"],
+          "fullName": "firebaseDatabase.getWorkspace access control returns workspace when collaborator",
+          "status": "passed",
+          "title": "returns workspace when collaborator",
+          "duration": 0.20199999999999818,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235893571,
+      "endTime": 1762235893573.299,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/__tests__/firebaseDatabase.access.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["firebaseDatabase.uploadDocument"],
+          "fullName": "firebaseDatabase.uploadDocument uploads file and updates workspace documents list",
+          "status": "passed",
+          "title": "uploads file and updates workspace documents list",
+          "duration": 4.354708999999957,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235892440,
+      "endTime": 1762235892444.3547,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/__tests__/firebaseDatabase.documents.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["firebaseDatabase.deleteDocument"],
+          "fullName": "firebaseDatabase.deleteDocument removes from storage and updates workspace documents",
+          "status": "passed",
+          "title": "removes from storage and updates workspace documents",
+          "duration": 2.2334580000000415,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase.journal & context notes"],
+          "fullName": "firebaseDatabase.journal & context notes adds journal entry",
+          "status": "passed",
+          "title": "adds journal entry",
+          "duration": 1.079541000000063,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase.journal & context notes"],
+          "fullName": "firebaseDatabase.journal & context notes adds context note",
+          "status": "passed",
+          "title": "adds context note",
+          "duration": 0.3837499999999636,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase.subscribeToWorkspace"],
+          "fullName": "firebaseDatabase.subscribeToWorkspace maps snapshot to workspace and handles no access",
+          "status": "passed",
+          "title": "maps snapshot to workspace and handles no access",
+          "duration": 0.34749999999996817,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235891886,
+      "endTime": 1762235891890.3474,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/__tests__/firebaseDatabase.extra.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["firebaseDatabase offline fallbacks"],
+          "fullName": "firebaseDatabase offline fallbacks queryWorkspaces returns empty set when Firestore is unavailable",
+          "status": "passed",
+          "title": "queryWorkspaces returns empty set when Firestore is unavailable",
+          "duration": 2.971499999999992,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase offline fallbacks"],
+          "fullName": "firebaseDatabase offline fallbacks getUserWorkspaces throws when user ID is missing offline",
+          "status": "passed",
+          "title": "getUserWorkspaces throws when user ID is missing offline",
+          "duration": 2.1892500000000155,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235893412,
+      "endTime": 1762235893417.1892,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/__tests__/firebaseDatabase.offline.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["firebaseDatabase.getPublicWorkspacesPage"],
+          "fullName": "firebaseDatabase.getPublicWorkspacesPage returns hasMore + cursor when results exceed limit",
+          "status": "passed",
+          "title": "returns hasMore + cursor when results exceed limit",
+          "duration": 1.1908339999999953,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase.getPublicWorkspacesPage"],
+          "fullName": "firebaseDatabase.getPublicWorkspacesPage applies stage and tags filters",
+          "status": "passed",
+          "title": "applies stage and tags filters",
+          "duration": 0.3412919999999531,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235892935,
+      "endTime": 1762235892936.3413,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/__tests__/firebaseDatabase.queries.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["firebaseDatabase.adjustCommentCount"],
+          "fullName": "firebaseDatabase.adjustCommentCount increments workspace count, clamps negatives, and syncs public project",
+          "status": "passed",
+          "title": "increments workspace count, clamps negatives, and syncs public project",
+          "duration": 5.254665999999929,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase.incrementViewCount"],
+          "fullName": "firebaseDatabase.incrementViewCount increments view count and sets lastViewedAt",
+          "status": "passed",
+          "title": "increments view count and sets lastViewedAt",
+          "duration": 2.477916999999934,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase.queryWorkspaces"],
+          "fullName": "firebaseDatabase.queryWorkspaces returns mapped workspaces and hasMore when more docs than limit",
+          "status": "passed",
+          "title": "returns mapped workspaces and hasMore when more docs than limit",
+          "duration": 2.2415000000000873,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase.queryWorkspaces"],
+          "fullName": "firebaseDatabase.queryWorkspaces getPublicWorkspaceBySlug returns mapped workspace",
+          "status": "passed",
+          "title": "getPublicWorkspaceBySlug returns mapped workspace",
+          "duration": 0.3121659999999338,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "firebaseDatabase publish/unpublish (online path)"
+          ],
+          "fullName": "firebaseDatabase publish/unpublish (online path) publishes when owner matches and syncs public_projects",
+          "status": "passed",
+          "title": "publishes when owner matches and syncs public_projects",
+          "duration": 2.05662499999994,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "firebaseDatabase publish/unpublish (online path)"
+          ],
+          "fullName": "firebaseDatabase publish/unpublish (online path) unpublishes and removes public_projects document",
+          "status": "passed",
+          "title": "unpublishes and removes public_projects document",
+          "duration": 0.5141250000000355,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase shortlist operations"],
+          "fullName": "firebaseDatabase shortlist operations getShortlistedProjects returns filtered string array",
+          "status": "passed",
+          "title": "getShortlistedProjects returns filtered string array",
+          "duration": 0.19333300000005238,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase shortlist operations"],
+          "fullName": "firebaseDatabase shortlist operations addProjectToShortlist writes arrayUnion to user doc",
+          "status": "passed",
+          "title": "addProjectToShortlist writes arrayUnion to user doc",
+          "duration": 0.40087500000004184,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["firebaseDatabase shortlist operations"],
+          "fullName": "firebaseDatabase shortlist operations removeProjectFromShortlist writes arrayRemove to user doc",
+          "status": "passed",
+          "title": "removeProjectFromShortlist writes arrayRemove to user doc",
+          "duration": 0.25737500000002456,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235891973,
+      "endTime": 1762235891987.2573,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/__tests__/firebaseDatabase.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["GeminiService"],
+          "fullName": "GeminiService returns an intelligent fallback response when no API key is configured",
+          "status": "passed",
+          "title": "returns an intelligent fallback response when no API key is configured",
+          "duration": 10.300417000000039,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["GeminiService"],
+          "fullName": "GeminiService caches responses for identical prompts",
+          "status": "passed",
+          "title": "caches responses for identical prompts",
+          "duration": 14.203666999999996,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["GeminiService"],
+          "fullName": "GeminiService passes rich project context to Gemini prompts when requesting BMC suggestions",
+          "status": "passed",
+          "title": "passes rich project context to Gemini prompts when requesting BMC suggestions",
+          "duration": 7.347834000000034,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["GeminiService"],
+          "fullName": "GeminiService builds interview questions prompt with context",
+          "status": "passed",
+          "title": "builds interview questions prompt with context",
+          "duration": 6.829583999999954,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["GeminiService"],
+          "fullName": "GeminiService builds MVP suggestions prompt with optional value proposition",
+          "status": "passed",
+          "title": "builds MVP suggestions prompt with optional value proposition",
+          "duration": 2.6278330000000096,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235891028,
+      "endTime": 1762235891069.628,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/__tests__/geminiService.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["notificationService.createNotification"],
+          "fullName": "notificationService.createNotification does not create when actor and user are the same",
+          "status": "passed",
+          "title": "does not create when actor and user are the same",
+          "duration": 0.8374579999999696,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["notificationService.createNotification"],
+          "fullName": "notificationService.createNotification creates with optional fields present",
+          "status": "passed",
+          "title": "creates with optional fields present",
+          "duration": 0.9472920000000613,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["notificationService.subscribeToNotifications"],
+          "fullName": "notificationService.subscribeToNotifications maps snapshots to domain notifications and invokes listener",
+          "status": "passed",
+          "title": "maps snapshots to domain notifications and invokes listener",
+          "duration": 0.7636250000000473,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["notificationService unread and read operations"],
+          "fullName": "notificationService unread and read operations getUnreadNotifications queries and maps results",
+          "status": "passed",
+          "title": "getUnreadNotifications queries and maps results",
+          "duration": 0.44820900000001984,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["notificationService unread and read operations"],
+          "fullName": "notificationService unread and read operations markAsRead updates a single notification",
+          "status": "passed",
+          "title": "markAsRead updates a single notification",
+          "duration": 0.2902910000000247,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["notificationService unread and read operations"],
+          "fullName": "notificationService unread and read operations markAllAsRead updates each unread notification",
+          "status": "passed",
+          "title": "markAllAsRead updates each unread notification",
+          "duration": 0.37437499999998636,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235893125,
+      "endTime": 1762235893128.3743,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/services/__tests__/notificationService.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["Firestore rules - comments"],
+          "fullName": "Firestore rules - comments denies create when project not public; allows when public",
+          "status": "skipped",
+          "title": "denies create when project not public; allows when public",
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Firestore rules - comments"],
+          "fullName": "Firestore rules - comments enforces author-only update and delete",
+          "status": "skipped",
+          "title": "enforces author-only update and delete",
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235885627,
+      "endTime": 1762235885627,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/test/integration/firestore.comments.rules.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["Firestore rules - notifications"],
+          "fullName": "Firestore rules - notifications only actor can create; user can read own; update is mark read only",
+          "status": "skipped",
+          "title": "only actor can create; user can read own; update is mark read only",
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235885627,
+      "endTime": 1762235885627,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/test/integration/firestore.notifications.rules.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["Firestore security rules"],
+          "fullName": "Firestore security rules allows public read of public_projects and denies write for anon",
+          "status": "skipped",
+          "title": "allows public read of public_projects and denies write for anon",
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Firestore security rules"],
+          "fullName": "Firestore security rules permits owner to create and update their public_projects entry",
+          "status": "skipped",
+          "title": "permits owner to create and update their public_projects entry",
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Firestore security rules"],
+          "fullName": "Firestore security rules denies reading private workspace for non-owner, allows owner and public",
+          "status": "skipped",
+          "title": "denies reading private workspace for non-owner, allows owner and public",
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235885627,
+      "endTime": 1762235885627,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/test/integration/firestore.rules.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["Storage security rules"],
+          "fullName": "Storage security rules profile images: owner can upload, other users denied",
+          "status": "skipped",
+          "title": "profile images: owner can upload, other users denied",
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Storage security rules"],
+          "fullName": "Storage security rules workspace documents: owner can upload when workspace exists; denies strangers",
+          "status": "skipped",
+          "title": "workspace documents: owner can upload when workspace exists; denies strangers",
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235885627,
+      "endTime": 1762235885627,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/test/integration/storage.rules.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["BusinessModelCanvas"],
+          "fullName": "BusinessModelCanvas updates store when editing a canvas field",
+          "status": "passed",
+          "title": "updates store when editing a canvas field",
+          "duration": 1119.586375,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235887649,
+      "endTime": 1762235888768.5864,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/components/workspace/BusinessModelCanvas.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["DocumentManager online"],
+          "fullName": "DocumentManager online calls uploadDocument and onDocumentsChange for pdf",
+          "status": "passed",
+          "title": "calls uploadDocument and onDocumentsChange for pdf",
+          "duration": 47.94854200000009,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["DocumentManager online"],
+          "fullName": "DocumentManager online calls deleteDocument when removing in online mode",
+          "status": "passed",
+          "title": "calls deleteDocument when removing in online mode",
+          "duration": 383.0558339999998,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235889969,
+      "endTime": 1762235890400.056,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/components/workspace/DocumentManager.online.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["DocumentManager"],
+          "fullName": "DocumentManager adds a local image and calls onDocumentsChange",
+          "status": "passed",
+          "title": "adds a local image and calls onDocumentsChange",
+          "duration": 76.15537499999982,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["DocumentManager"],
+          "fullName": "DocumentManager removes a document locally and does not call firebase delete when offline",
+          "status": "passed",
+          "title": "removes a document locally and does not call firebase delete when offline",
+          "duration": 376.78920800000014,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235889983,
+      "endTime": 1762235890435.7893,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/components/workspace/DocumentManager.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["WorkspaceEditor snapshot dialog"],
+          "fullName": "WorkspaceEditor snapshot dialog opens dialog, saves snapshot with note, and closes",
+          "status": "passed",
+          "title": "opens dialog, saves snapshot with note, and closes",
+          "duration": 2095.702958,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235887998,
+      "endTime": 1762235890093.703,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/components/workspace/WorkspaceEditor.snapshot.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["WorkspaceEditor autosave"],
+          "fullName": "WorkspaceEditor autosave schedules autosave after content change",
+          "status": "skipped",
+          "title": "schedules autosave after content change",
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235885627,
+      "endTime": 1762235885627,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/components/workspace/WorkspaceEditor.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["WorkspaceSharePanel"],
+          "fullName": "WorkspaceSharePanel enables publish when checklist is satisfied and calls publish",
+          "status": "passed",
+          "title": "enables publish when checklist is satisfied and calls publish",
+          "duration": 916.7552089999999,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235887716,
+      "endTime": 1762235888632.7551,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/components/workspace/WorkspaceSharePanel.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["Workspace Entity", "creation"],
+          "fullName": "Workspace Entity creation should create a new workspace with required fields",
+          "status": "passed",
+          "title": "should create a new workspace with required fields",
+          "duration": 4.792708999999945,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Workspace Entity", "creation"],
+          "fullName": "Workspace Entity creation should validate project name is not empty",
+          "status": "passed",
+          "title": "should validate project name is not empty",
+          "duration": 1.4005839999999807,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Workspace Entity", "creation"],
+          "fullName": "Workspace Entity creation should create with optional class code",
+          "status": "passed",
+          "title": "should create with optional class code",
+          "duration": 0.23920899999995981,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Workspace Entity", "canvas updates"],
+          "fullName": "Workspace Entity canvas updates should update canvas state",
+          "status": "passed",
+          "title": "should update canvas state",
+          "duration": 0.1934999999999718,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Workspace Entity", "canvas updates"],
+          "fullName": "Workspace Entity canvas updates should create a version when canvas is significantly updated",
+          "status": "passed",
+          "title": "should create a version when canvas is significantly updated",
+          "duration": 0.5592910000000302,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Workspace Entity", "journal entries"],
+          "fullName": "Workspace Entity journal entries should add journal entry",
+          "status": "passed",
+          "title": "should add journal entry",
+          "duration": 0.22033299999998235,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Workspace Entity", "journal entries"],
+          "fullName": "Workspace Entity journal entries should link journal entry to version",
+          "status": "passed",
+          "title": "should link journal entry to version",
+          "duration": 0.07995900000003076,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Workspace Entity", "public/private"],
+          "fullName": "Workspace Entity public/private should toggle public status",
+          "status": "passed",
+          "title": "should toggle public status",
+          "duration": 0.09075000000007094,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Workspace Entity", "public/private"],
+          "fullName": "Workspace Entity public/private should make private",
+          "status": "passed",
+          "title": "should make private",
+          "duration": 0.14716699999996763,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235892766,
+      "endTime": 1762235892774.1472,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/domain/workspace/entities/Workspace.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["ProjectCode Value Object", "creation"],
+          "fullName": "ProjectCode Value Object creation should create a valid BUF-XXXX code",
+          "status": "passed",
+          "title": "should create a valid BUF-XXXX code",
+          "duration": 6.137457999999924,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["ProjectCode Value Object", "creation"],
+          "fullName": "ProjectCode Value Object creation should create from existing valid code",
+          "status": "passed",
+          "title": "should create from existing valid code",
+          "duration": 1.0612089999999625,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["ProjectCode Value Object", "creation"],
+          "fullName": "ProjectCode Value Object creation should throw error for invalid format",
+          "status": "passed",
+          "title": "should throw error for invalid format",
+          "duration": 1.0694590000000517,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["ProjectCode Value Object", "equality"],
+          "fullName": "ProjectCode Value Object equality should be equal when codes match",
+          "status": "passed",
+          "title": "should be equal when codes match",
+          "duration": 0.15570900000000165,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["ProjectCode Value Object", "equality"],
+          "fullName": "ProjectCode Value Object equality should not be equal when codes differ",
+          "status": "passed",
+          "title": "should not be equal when codes differ",
+          "duration": 0.06404199999997218,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["ProjectCode Value Object", "validation"],
+          "fullName": "ProjectCode Value Object validation should validate BUF prefix",
+          "status": "passed",
+          "title": "should validate BUF prefix",
+          "duration": 0.08745799999996962,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["ProjectCode Value Object", "validation"],
+          "fullName": "ProjectCode Value Object validation should require minimum length",
+          "status": "passed",
+          "title": "should require minimum length",
+          "duration": 0.07991700000002311,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235892169,
+      "endTime": 1762235892178.1558,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/domain/shared/value-objects/ProjectCode.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["WorkspaceService", "createWorkspace"],
+          "fullName": "WorkspaceService createWorkspace should create and save a new workspace",
+          "status": "passed",
+          "title": "should create and save a new workspace",
+          "duration": 1.4536669999999958,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["WorkspaceService", "createWorkspace"],
+          "fullName": "WorkspaceService createWorkspace should generate unique codes",
+          "status": "passed",
+          "title": "should generate unique codes",
+          "duration": 0.22529099999997015,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["WorkspaceService", "updateWorkspace"],
+          "fullName": "WorkspaceService updateWorkspace should update workspace canvas",
+          "status": "passed",
+          "title": "should update workspace canvas",
+          "duration": 0.254291999999964,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["WorkspaceService", "detectPivot"],
+          "fullName": "WorkspaceService detectPivot should detect major pivot when multiple fields change significantly",
+          "status": "passed",
+          "title": "should detect major pivot when multiple fields change significantly",
+          "duration": 0.21495800000002419,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["WorkspaceService", "detectPivot"],
+          "fullName": "WorkspaceService detectPivot should not detect pivot for minor changes",
+          "status": "passed",
+          "title": "should not detect pivot for minor changes",
+          "duration": 0.16212499999994634,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["WorkspaceService", "deleteWorkspace"],
+          "fullName": "WorkspaceService deleteWorkspace should delete workspace",
+          "status": "passed",
+          "title": "should delete workspace",
+          "duration": 0.09020900000007259,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1762235891299,
+      "endTime": 1762235891302.162,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/laneyfraass/Buffalo-Projects/src/domain/workspace/services/WorkspaceService.test.ts"
+    }
+  ]
+}
