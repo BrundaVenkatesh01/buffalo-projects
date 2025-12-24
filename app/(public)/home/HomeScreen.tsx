@@ -263,13 +263,13 @@ export function HomeScreen() {
           </p>
 
           {/* Quick Import CTA */}
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-4 mt-10 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
             {/* GitHub URL Input */}
             <div className="flex w-full max-w-xl gap-3 items-stretch">
               <input
                 type="text"
                 placeholder="Paste GitHub URL (e.g. github.com/user/repo)"
-                className="flex-1 h-12 px-4 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
+                className="flex-1 h-12 px-4 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/40 hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-blue-500/60 transition-all duration-200"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     const value = (e.target as HTMLInputElement).value.trim();
