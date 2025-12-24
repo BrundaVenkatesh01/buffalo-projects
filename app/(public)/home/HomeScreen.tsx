@@ -324,14 +324,14 @@ export function HomeScreen() {
               variant="ghost"
               size="lg"
               onClick={() => router.push(user ? "/workspace/new" : "/signup")}
-              className="text-neutral-400 hover:text-white"
+              className="px-0 py-0 text-sm font-medium text-neutral-400 hover:text-white hover:underline underline-offset-4transition-colors duration-200"
             >
               Start from scratch
             </Button>
           </div>
 
           {/* Quick proof points - Focus on concrete deliverables */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-20">
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-10">
             {[
               {
                 icon: <CheckCircle2 className="w-5 h-5" />,
