@@ -145,7 +145,7 @@ function FeatureCard({
     >
       <div
         ref={cardRef}
-        className="relative group h-full"
+        className="relative group h-full rounded-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:border-white/[0.18] hover:bg-white/[0.04]"
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* Glassmorphism card - on brand */}
@@ -156,12 +156,12 @@ function FeatureCard({
           {/* Icon with subtle glow */}
           <div className="relative inline-flex mb-7">
             <div className="absolute inset-0 rounded-2xl bg-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative p-4 rounded-2xl bg-white/[0.06] text-blue-400 border border-white/[0.1] group-hover:border-blue-400/30 transition-all duration-300">
+            <div className="relative p-4 rounded-2xl bg-white/[0.06] text-blue-400 border border-white/[0.1] transition-all duration-300 group-hover:border-blue-400/40 group-hover:-translate-y-0.5">
               {icon}
             </div>
           </div>
 
-          <h3 className="relative text-xl font-semibold text-white mb-3 tracking-tight">
+          <h3 className="relative text-xl font-semibold text-white/90 mb-3 tracking-tight transition-colors duration-300 group-hover:text-white">
             {title}
           </h3>
           <p className="relative text-neutral-400 leading-relaxed">
@@ -236,6 +236,9 @@ export function HomeScreen() {
 
   return (
     <div className="relative bg-black overflow-hidden">
+      {/*Ambient purple glow*/}
+      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[600px] w-[900px] rounded-full bg-purple-600/25 blur-[160px]"
+      />
       {/* Hero Section */}
       <div className="min-h-screen relative flex items-center justify-center px-6">
         {/* Gradient mesh background with parallax */}
