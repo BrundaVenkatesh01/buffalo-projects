@@ -237,8 +237,8 @@ export function HomeScreen() {
   return (
     <div className="relative bg-black overflow-hidden">
       {/*Ambient purple glow*/}
-      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[600px] w-[900px] rounded-full bg-purple-600/25 blur-[160px]"
-      />
+      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[600px] w-[900px] rounded-full bg-purple-600/25 blur-[160px]" />
+      <div className="pointer-events-none absolute top-40 -left-40 h-[500px] w-[700px] rounded-full bg-blue-600/25 blur-[180px]" />
       {/* Hero Section */}
       <div className="min-h-screen relative flex items-center justify-center px-6">
         {/* Gradient mesh background with parallax */}
