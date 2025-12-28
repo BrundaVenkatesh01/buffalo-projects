@@ -351,9 +351,14 @@ export function HomeScreen() {
             ].map((item, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 px-5 py-3 rounded-full bg-white/[0.03] border border-white/[0.1] backdrop-blur-sm hover:bg-white/[0.06] hover:border-white/[0.15] transition-all duration-200 shadow-lg shadow-black/10"
+                className="group relative flex items-center gap-3 px-5 py-3 rounded-full bg-white/[0.03] border border-pink-500/20 backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.06] hover:border-pink-400/40 shadow-lg shadow-black/10"
               >
-                <div className="text-blue-400 flex items-center justify-center">
+              <div
+                aria-hidden
+                 className="absolute inset-0 rounded-full bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300  -z-10"
+              />
+
+                <div className="text-pink-400 group-hover:text-pink-300 transition-colors">
                   {item.icon}
                 </div>
                 <span className="text-sm font-medium text-neutral-200">

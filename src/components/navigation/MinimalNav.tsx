@@ -3,7 +3,7 @@
 import { m, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 
 import { AnimatedLogo } from "@/components/common/AnimatedLogo";
 import { TwentySixLockBadge } from "@/components/common/TwentySixLockBadge";
@@ -24,7 +24,16 @@ export function MinimalNav() {
   const pathname = usePathname();
   const shouldReduceMotion = useReducedMotion();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    handleScroll(); // Initial check
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
   const navItems = [
     { label: "Projects", href: "/projects" },
     { label: "Resources", href: "/resources" },
@@ -34,26 +43,42 @@ export function MinimalNav() {
 
   return (
     <m.header
-      className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md"
-      initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
-      {...(!shouldReduceMotion
-        ? {
-            animate: {
-              opacity: 1,
-              y: 0,
-              transition: { duration: 0.2, ease: "easeOut" },
-            },
-          }
-        : {})}
-      layout
-    >
+      className={`relative sticky top-0 z-50 transition-all duration-300 ${
+    scrolled
+      ? "border-b border-white/10 bg-background/60 backdrop-blur-xl shadow-lg shadow-black/20"
+      : "border-b border-transparent bg-background/40"
+  }`}
+  initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
+  {...(!shouldReduceMotion
+    ? {
+        animate: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.2, ease: "easeOut" },
+        },
+      }
+    : {})}
+  layout
+>
+      {scrolled && (
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-0"
+      >
+        <div
+          className="absolute -top-6 left-1/2 h-20 w-[500px]
+                 -translate-x-1/2
+                 bg-gradient-to-r from-blue-500/20 via-purple-500/25 to-pink-500/20
+                 blur-2xl opacity-70"/>
+      </div>
+      )}  
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:text-foreground focus:shadow-lg"
       >
         Skip to main content
       </a>
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <button
           type="button"
