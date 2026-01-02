@@ -6,6 +6,15 @@ import { isFirebaseConfigured } from "../services/firebase";
 import { authService, type User } from "../services/firebaseAuth";
 import { logger } from "../utils/logger";
 
+const DEV_MOCK_USER: User = {
+  uid: "dev-user-1",
+  email: "brunda@buffalo.edu",
+  firstName: "Brunda",
+  lastName: "Venkatesh",
+  // add other fields only if your User type requires them
+};
+
+
 interface AuthState {
   user: User | null;
   loading: boolean;
@@ -48,6 +57,7 @@ const createAuthStore = () => {
         if (!isFirebaseConfigured) {
           logger.warn("Firebase is not configured, running in local-only mode");
           set({
+            user: DEV_MOCK_USER,
             loading: false,
             error: "Authentication is not configured. Running in local mode.",
           });

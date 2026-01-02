@@ -13,6 +13,7 @@ import { ArrowRight, CheckCircle2, Download, Shield, Users } from "@/icons";
 import { cleanupGSAP, prefersReducedMotion } from "@/lib/gsap-utils";
 import { useAuthStore } from "@/stores/authStore";
 
+
 // Register GSAP plugins
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -250,10 +251,16 @@ export function HomeScreen() {
         <GridPattern className="text-white" spacing={32} opacity={0.015} />
 
         {/* Hero Content */}
-        <div
+        {/* <div
+          ref={heroRef} */}
+        <m.div
           ref={heroRef}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}  
           className="max-w-4xl mx-auto text-center py-24 relative z-10"
         >
+        
           {/* Slide-Replace Headline */}
           <SlideReplaceHeadline />
 
@@ -264,6 +271,7 @@ export function HomeScreen() {
               One link to share everywhere.
             </span>
           </p>
+        
 
           {/* Quick Import CTA */}
           <div className="flex flex-col items-center gap-4 mt-10 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
@@ -353,10 +361,10 @@ export function HomeScreen() {
                 key={i}
                 className="group relative flex items-center gap-3 px-5 py-3 rounded-full bg-white/[0.03] border border-pink-500/20 backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.06] hover:border-pink-400/40 shadow-lg shadow-black/10"
               >
-              <div
-                aria-hidden
-                 className="absolute inset-0 rounded-full bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300  -z-10"
-              />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 rounded-full bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300  -z-10"
+                />
 
                 <div className="text-pink-400 group-hover:text-pink-300 transition-colors">
                   {item.icon}
@@ -367,8 +375,10 @@ export function HomeScreen() {
               </div>
             ))}
           </div>
+          </m.div>
         </div>
-      </div>
+      
+      
 
       {/* Features Section */}
       <section
@@ -377,12 +387,13 @@ export function HomeScreen() {
       >
         {/* Subtle background pattern for depth */}
         <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 1px)`,
-            backgroundSize: "32px 32px",
-          }}
-        />
+  className="absolute inset-0 opacity-[0.02]"
+  style={{
+    backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 1px)`,
+    backgroundSize: "32px 32px",
+  }}
+      ></div>
+
 
         <div className="max-w-6xl mx-auto relative">
           <m.div

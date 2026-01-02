@@ -8,7 +8,7 @@ interface AnimatedLogoProps {
   className?: string;
 }
 
-const TEXTS = ["Buffalo Projects", "Built in Buffalo", "See you in '26"];
+const TEXTS = ["Buffalo Projects", "Built in Buffalo", "'26 is here!!"];
 
 const ROTATION_INTERVAL = 30000; // 30 seconds
 const TYPING_SPEED = 60; // Smoother: 60ms per character

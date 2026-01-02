@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { TwentySixLockBadge } from "@/components/common/TwentySixLockBadge";
 
 interface AppHeaderProps {
   title?: string;
@@ -27,6 +28,8 @@ export function AppHeader({
         )}
         <div className="flex flex-wrap items-start justify-between gap-6">
           <div className="flex-1 space-y-3">
+            {(title || titleContent) && (
+              <div className="flex items-center gap-3">
             {titleContent ? (
               titleContent
             ) : (
@@ -36,6 +39,8 @@ export function AppHeader({
                     {title}
                   </h1>
                 )}
+                <TwentySixLockBadge size="sm" />
+                
                 {subtitle && (
                   <p className="text-sm text-muted-foreground">{subtitle}</p>
                 )}
@@ -43,6 +48,8 @@ export function AppHeader({
             )}
             {titleContent && subtitle && (
               <p className="text-sm text-muted-foreground">{subtitle}</p>
+            )}
+            </div>
             )}
             {children}
           </div>

@@ -187,7 +187,7 @@ export const typographyClasses = {
 
   // Page headlines
   h1: "text-4xl md:text-5xl font-bold tracking-tight",
-  h2: "text-3xl md:text-4xl font-bold tracking-tight",
+  h2: "text-4xl md:text-5xl font-bold tracking-tight text-white leading-[1.05]",
   h3: "text-2xl md:text-3xl font-semibold tracking-tight",
   h4: "text-xl md:text-2xl font-semibold",
 
