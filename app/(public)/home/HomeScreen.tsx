@@ -1,10 +1,11 @@
+// ...existing code...
 "use client";
 
-import { AnimatePresence, m, useReducedMotion } from "framer-motion";
+import { m } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef} from "react";
 import type { ReactNode } from "react";
 
 import { GradientMesh, GridPattern } from "@/components/graphics";
@@ -13,69 +14,9 @@ import { ArrowRight, CheckCircle2, Download, Shield, Users } from "@/icons";
 import { cleanupGSAP, prefersReducedMotion } from "@/lib/gsap-utils";
 import { useAuthStore } from "@/stores/authStore";
 
-
 // Register GSAP plugins
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
-}
-
-// Phrases for slide-replace animation - Focus on portfolio value, not community
-const HEADLINE_PHRASES = [
-  "Your project deserves a home.",
-  "Build your portfolio.",
-  "Share with one link.",
-];
-
-function SlideReplaceHeadline() {
-  const phrases = HEADLINE_PHRASES;
-  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
-  const shouldReduceMotion = useReducedMotion();
-
-  // Cycle through phrases every 7 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
-    }, 7000); // 7 seconds per phrase
-
-    return () => clearInterval(interval);
-  }, [phrases.length]);
-
-  // Animation variants for slide transitions
-  const slideVariants = {
-    enter: {
-      x: shouldReduceMotion ? 0 : 100,
-      opacity: 0,
-    },
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: {
-      x: shouldReduceMotion ? 0 : -100,
-      opacity: 0,
-    },
-  };
-
-  return (
-    <div className="min-h-[140px] md:min-h-[160px] flex items-center justify-center overflow-hidden">
-      <AnimatePresence mode="wait">
-        <m.h1
-          key={currentPhraseIndex}
-          variants={slideVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.3 },
-          }}
-          className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white"
-        >
-          {phrases[currentPhraseIndex]}
-        </m.h1>
-      </AnimatePresence>
-    </div>
-  );
 }
 
 function FeatureCard({
@@ -149,12 +90,9 @@ function FeatureCard({
         className="relative group h-full rounded-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:border-white/[0.18] hover:bg-white/[0.04]"
         style={{ transformStyle: "preserve-3d" }}
       >
-        {/* Glassmorphism card - on brand */}
         <div className="relative h-full p-8 rounded-3xl bg-white/[0.02] backdrop-blur-sm border border-white/[0.1] hover:border-blue-500/30 hover:bg-white/[0.04] transition-all duration-300 shadow-lg shadow-black/20 group-hover:shadow-xl group-hover:shadow-blue-500/10">
-          {/* Subtle gradient overlay on hover */}
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/[0.05] via-transparent to-blue-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-          {/* Icon with subtle glow */}
           <div className="relative inline-flex mb-7">
             <div className="absolute inset-0 rounded-2xl bg-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="relative p-4 rounded-2xl bg-white/[0.06] text-blue-400 border border-white/[0.1] transition-all duration-300 group-hover:border-blue-400/40 group-hover:-translate-y-0.5">
@@ -187,7 +125,6 @@ export function HomeScreen() {
     }
 
     const ctx = gsap.context(() => {
-      // Hero section fade in
       if (heroRef.current) {
         gsap.from(heroRef.current.children, {
           opacity: 0,
@@ -198,7 +135,6 @@ export function HomeScreen() {
         });
       }
 
-      // How it works section title
       if (howItWorksRef.current) {
         gsap.from(howItWorksRef.current.querySelector(".section-title"), {
           scrollTrigger: {
@@ -213,10 +149,6 @@ export function HomeScreen() {
         });
       }
 
-      // Cards container ref kept for potential future use
-      // Individual card animations handled by Motion whileInView
-
-      // Parallax effect on gradient background
       gsap.to(".gradient-mesh", {
         scrollTrigger: {
           trigger: "body",
@@ -237,55 +169,86 @@ export function HomeScreen() {
 
   return (
     <div className="relative bg-black overflow-hidden">
-      {/*Ambient purple glow*/}
       <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[600px] w-[900px] rounded-full bg-purple-600/25 blur-[160px]" />
       <div className="pointer-events-none absolute top-40 -left-40 h-[500px] w-[700px] rounded-full bg-blue-600/25 blur-[180px]" />
-      {/* Hero Section */}
+
       <div className="min-h-screen relative flex items-center justify-center px-6">
-        {/* Gradient mesh background with parallax */}
         <div className="gradient-mesh">
           <GradientMesh />
         </div>
 
-        {/* Subtle grid pattern overlay */}
         <GridPattern className="text-white" spacing={32} opacity={0.015} />
 
-        {/* Hero Content */}
-        {/* <div
-          ref={heroRef} */}
         <m.div
           ref={heroRef}
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}  
+          transition={{ duration: 1, ease: "easeOut" }}
           className="max-w-4xl mx-auto text-center py-24 relative z-10"
         >
-        
-          {/* Slide-Replace Headline */}
-          <SlideReplaceHeadline />
+          <div className="min-h-[140px] md:min-h-[160px] flex items-center justify-center">
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white">
+              Showcase Your Buffalo Projects/Business
+            </h1>
+          </div>
 
-          {/* Subheadline - Focus on tangible outcome */}
-          <p className="text-xl md:text-2xl text-neutral-400 mt-8 mb-14 max-w-2xl mx-auto leading-relaxed font-light">
-            Create a professional project page in minutes.{" "}
-            <span className="text-white font-medium">
-              One link to share everywhere.
+          <p className="text-xl md:text-2xl text-neutral-300 mt-8 mb-14 max-w-2xl mx-auto leading-relaxed">
+            Create a professional page for your business or project in minutes.{" "}
+            <span className="text-white font-semibold">
+              No tech skills needed.
             </span>
           </p>
-        
 
-          {/* Quick Import CTA */}
-          <div className="flex flex-col items-center gap-4 mt-10 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-            {/* GitHub URL Input */}
-            <div className="flex w-full max-w-xl gap-3 items-stretch">
-              <input
-                type="text"
-                placeholder="Paste GitHub URL (e.g. github.com/user/repo)"
-                className="flex-1 h-12 px-4 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/40 hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-blue-500/60 transition-all duration-200"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    const value = (e.target as HTMLInputElement).value.trim();
+          <div className="flex flex-col items-center gap-6 mt-10">
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={() => router.push(user ? "/workspace/new" : "/signup")}
+              rightIcon={
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+              }
+              className="group relative h-14 px-10 text-lg shadow-2xl shadow-blue-500/40 hover:shadow-blue-500/60 transition-all duration-300 border border-white/20 hover:border-white/30"
+            >
+              Create My Business Page
+            </Button>
+
+            <div className="flex items-center gap-3 text-neutral-400 text-sm my-2">
+              <span className="w-16 h-px bg-white/10"></span>
+              <span>or</span>
+              <span className="w-16 h-px bg-white/10"></span>
+            </div>
+
+            <div className="w-full max-w-xl rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+              <p className="text-sm text-neutral-400 mb-3 text-center">
+                Have a GitHub project? Import it:
+              </p>
+              <div className="flex w-full gap-3 items-stretch">
+                <input
+                  type="text"
+                  placeholder="github.com/yourname/project"
+                  className="flex-1 h-12 px-4 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/40 hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-blue-500/60 transition-all duration-200"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      const value = (e.target as HTMLInputElement).value.trim();
+                      if (value) {
+                        sessionStorage.setItem("quick_import_url", value);
+                        router.push(
+                          user
+                            ? "/workspace/new?import=github"
+                            : "/signup?next=/workspace/new?import=github",
+                        );
+                      }
+                    }
+                  }}
+                />
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    const input = document.querySelector(
+                      'input[placeholder*="github"]',
+                    ) as HTMLInputElement;
+                    const value = input?.value?.trim();
                     if (value) {
-                      // Store URL in sessionStorage and redirect to import flow
                       sessionStorage.setItem("quick_import_url", value);
                       router.push(
                         user
@@ -293,55 +256,30 @@ export function HomeScreen() {
                           : "/signup?next=/workspace/new?import=github",
                       );
                     }
-                  }
-                }}
-              />
-              <Button
-                variant="primary"
-                onClick={() => {
-                  const input = document.querySelector(
-                    'input[placeholder*="GitHub"]',
-                  ) as HTMLInputElement;
-                  const value = input?.value?.trim();
-                  if (value) {
-                    sessionStorage.setItem("quick_import_url", value);
-                    router.push(
-                      user
-                        ? "/workspace/new?import=github"
-                        : "/signup?next=/workspace/new?import=github",
-                    );
-                  } else {
-                    router.push(user ? "/dashboard" : "/signup");
-                  }
-                }}
-                rightIcon={
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-                }
-                className="group relative h-12 px-6 shadow-2xl shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 border border-white/10 hover:border-white/20 whitespace-nowrap"
-              >
-                Import
-              </Button>
+                  }}
+                  className="h-12 px-6 border border-white/10 hover:border-white/20 whitespace-nowrap"
+                >
+                  Import
+                </Button>
+              </div>
             </div>
-
-            {/* Or divider */}
-            <div className="flex items-center gap-3 text-neutral-500 text-sm">
-              <span className="w-12 h-px bg-white/10"></span>
-              <span>or</span>
-              <span className="w-12 h-px bg-white/10"></span>
-            </div>
-
-            {/* Manual create button */}
-            <Button
-              variant="ghost"
-              size="lg"
-              onClick={() => router.push(user ? "/workspace/new" : "/signup")}
-              className="px-0 py-0 text-sm font-medium text-neutral-400 hover:text-white hover:underline underline-offset-4transition-colors duration-200"
-            >
-              Start from scratch
-            </Button>
           </div>
 
-          {/* Quick proof points - Focus on concrete deliverables */}
+          <div className="flex items-center gap-3 text-neutral-500 text-sm mt-8">
+            <span className="w-12 h-px bg-white/10"></span>
+            <span>or</span>
+            <span className="w-12 h-px bg-white/10"></span>
+          </div>
+
+          <Button
+            variant="ghost"
+            size="lg"
+            onClick={() => router.push(user ? "/workspace/new" : "/signup")}
+            className="px-0 py-0 text-sm font-medium text-neutral-400 hover:text-white hover:underline underline-offset-4 transition-colors duration-200"
+          >
+            Start from scratch
+          </Button>
+
           <div className="flex flex-wrap items-center justify-center gap-4 mt-10">
             {[
               {
@@ -363,7 +301,7 @@ export function HomeScreen() {
               >
                 <div
                   aria-hidden
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300  -z-10"
+                  className="absolute inset-0 rounded-full bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 -z-10"
                 />
 
                 <div className="text-pink-400 group-hover:text-pink-300 transition-colors">
@@ -375,25 +313,20 @@ export function HomeScreen() {
               </div>
             ))}
           </div>
-          </m.div>
-        </div>
-      
-      
+        </m.div>
+      </div>
 
-      {/* Features Section */}
       <section
         ref={howItWorksRef}
         className="py-24 md:py-40 px-6 border-t border-neutral-900 relative"
       >
-        {/* Subtle background pattern for depth */}
         <div
-  className="absolute inset-0 opacity-[0.02]"
-  style={{
-    backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 1px)`,
-    backgroundSize: "32px 32px",
-  }}
-      ></div>
-
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 1px)`,
+            backgroundSize: "32px 32px",
+          }}
+        />
 
         <div className="max-w-6xl mx-auto relative">
           <m.div
@@ -406,7 +339,7 @@ export function HomeScreen() {
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight">
               Your project page, done right
             </h2>
-            <p className="text-xl md:text-2xl text-neutral-400 font-light max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-neutral-300 font-light max-w-2xl mx-auto">
               Import from anywhere. Polish in minutes.{" "}
               <span className="text-white">Share a professional link.</span>
             </p>
@@ -437,7 +370,6 @@ export function HomeScreen() {
         </div>
       </section>
 
-      {/* Footer - Ultra Minimal */}
       <footer className="border-t border-white/[0.05] px-6 py-12">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-sm text-neutral-600 font-light">
@@ -462,3 +394,4 @@ export function HomeScreen() {
     </div>
   );
 }
+// ...existing code...

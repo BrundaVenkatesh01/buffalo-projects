@@ -14,7 +14,6 @@ const DEV_MOCK_USER: User = {
   // add other fields only if your User type requires them
 };
 
-
 interface AuthState {
   user: User | null;
   loading: boolean;
