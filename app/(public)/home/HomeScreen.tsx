@@ -5,7 +5,7 @@ import { m } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 
 import { GradientMesh, GridPattern } from "@/components/graphics";
