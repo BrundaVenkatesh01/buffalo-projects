@@ -251,8 +251,6 @@ export function DashboardScreen() {
       });
   }, [userWorkspaces, searchQuery, filter, sortBy]);
 
-  // Removed featured project - redundant with project grid
-
   const handleSaveProfile = async (updates: {
     firstName?: string;
     lastName?: string;
@@ -283,7 +281,6 @@ export function DashboardScreen() {
 
   // Import handlers
   const handleFileImport = async (result: ImportResult) => {
-    // Convert ImportResult to UnifiedImportResult
     const stageMap: Record<string, UnifiedImportResult["stage"]> = {
       idea: "idea",
       building: "building",
@@ -311,7 +308,6 @@ export function DashboardScreen() {
 
   const handleSingleImport = async (result: UnifiedImportResult) => {
     try {
-      // Create project from import data
       const workspace = await createWorkspace({
         projectName: result.projectName,
         description: result.description || result.oneLiner,
@@ -336,7 +332,6 @@ export function DashboardScreen() {
 
       await firebaseDatabase.updateWorkspace(workspace.code, updates);
       toast.success(`Imported: ${result.projectName}`);
-      // Route to unified editor
       router.push(`/edit/${workspace.code}`);
     } catch (error: unknown) {
       console.error("Import error:", error);
@@ -354,7 +349,6 @@ export function DashboardScreen() {
 
       for (const result of results) {
         try {
-          // Create project from batch import data
           const workspace = await createWorkspace({
             projectName: result.projectName,
             description: result.description || result.oneLiner,
@@ -398,7 +392,6 @@ export function DashboardScreen() {
     }
   };
 
-  // Workspace action handlers - Opens delete dialog instead of browser confirm
   const handleDeleteWorkspace = (workspace: Workspace) => {
     setWorkspaceToDelete(workspace);
     setDeleteDialogOpen(true);
@@ -417,7 +410,6 @@ export function DashboardScreen() {
     }
   };
 
-  // Toggle visibility between public and private
   const handleToggleVisibility = async (workspace: Workspace) => {
     try {
       if (workspace.isPublic) {
@@ -440,10 +432,8 @@ export function DashboardScreen() {
     options: PublishOptions,
   ) => {
     try {
-      // Use proper publish flow which handles slug generation and atomic updates
       await publishWorkspace(workspaceId);
 
-      // Update 26 under 26 flag separately if needed
       if (options.isForTwentySix) {
         await firebaseDatabase.updateWorkspace(workspaceId, {
           isForTwentySix: true,
@@ -488,14 +478,12 @@ export function DashboardScreen() {
     );
   }
 
-  // Loading state with workspace-pattern skeleton
+  // Loading state
   if (loading || !user) {
     return (
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-          {/* Main Content Skeleton */}
           <div className="space-y-8">
-            {/* Header Skeleton */}
             <div className="flex items-start gap-6">
               <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 animate-pulse" />
               <div className="flex-1 space-y-4">
@@ -509,17 +497,11 @@ export function DashboardScreen() {
                 </div>
               </div>
             </div>
-
-            {/* Quick Actions Skeleton */}
             <div className="flex gap-3">
               <div className="h-10 w-36 rounded-lg bg-white/10 animate-pulse" />
               <div className="h-10 w-24 rounded-lg bg-white/10 animate-pulse" />
             </div>
-
-            {/* Filter Bar Skeleton */}
             <div className="h-12 rounded-lg bg-white/10 animate-pulse" />
-
-            {/* Project Grid Skeleton */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[...Array(4)].map((_, i) => (
                 <div
@@ -529,8 +511,6 @@ export function DashboardScreen() {
               ))}
             </div>
           </div>
-
-          {/* Sidebar Skeleton */}
           <div className="space-y-6">
             <div className="h-80 rounded-2xl bg-white/10 animate-pulse" />
             <div className="h-48 rounded-lg bg-white/10 animate-pulse" />
@@ -544,15 +524,11 @@ export function DashboardScreen() {
 
   return (
     <>
-      {/* Welcome Modal for first-time users */}
       <WelcomeModal />
 
-      {/* Main Content - Dashboard Dense Layout */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
         <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
-          {/* Main Content Column */}
           <div className="space-y-4">
-            {/* Hero Section */}
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -571,7 +547,7 @@ export function DashboardScreen() {
               />
             </m.div>
 
-            {/* Welcome Section */}
+            {/* IMPROVED: Better welcome message for small business owners */}
             <m.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -584,28 +560,25 @@ export function DashboardScreen() {
                       <h2 className="text-lg font-semibold text-white mb-1">
                         {(() => {
                           const hour = new Date().getHours();
-                          if (hour < 12) {
-                            return "Good morning";
-                          }
-                          if (hour < 18) {
-                            return "Good afternoon";
-                          }
+                          if (hour < 12) {return "Good morning"};
+                          if (hour < 18) {return "Good afternoon"};
                           return "Good evening";
                         })()}
                         , {displayName.split(" ")[0] || displayName}! 👋
                       </h2>
                       {userWorkspaces.length === 0 ? (
-                        <p className="text-sm text-neutral-400">
-                          Create a shareable project page in minutes. Import
-                          from GitHub or start from scratch.
+                        /* IMPROVED: More welcoming for small business owners */
+                        <p className="text-sm text-neutral-300">
+                          Ready to showcase your business? Create a professional
+                          page in minutes—no technical skills needed.
                         </p>
                       ) : (
-                        <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+                        <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-300">
                           <span>
                             <strong className="text-white">
                               {stats.projects}
                             </strong>{" "}
-                            {stats.projects === 1 ? "project" : "projects"}
+                            {stats.projects === 1 ? "page" : "pages"}
                           </span>
                           {stats.publicProjects > 0 && (
                             <>
@@ -638,7 +611,7 @@ export function DashboardScreen() {
                         leftIcon={<Plus className="h-4 w-4" />}
                         size="sm"
                       >
-                        Create Project
+                        Create Page
                       </Button>
                     )}
                   </div>
@@ -646,7 +619,7 @@ export function DashboardScreen() {
               </Card>
             </m.div>
 
-            {/* Quick Actions */}
+            {/* Quick Actions - Only show if user has projects */}
             {userWorkspaces.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 <Button
@@ -654,7 +627,7 @@ export function DashboardScreen() {
                   leftIcon={<Plus className="h-4 w-4" />}
                   size="sm"
                 >
-                  Create Project
+                  Create Page
                 </Button>
                 <Button
                   onClick={() => setShowURLImport(true)}
@@ -682,28 +655,38 @@ export function DashboardScreen() {
               </div>
             )}
 
-            {/* Projects Section */}
+            {/* IMPROVED: Better section title */}
             <div className="space-y-3" id="profile-projects">
               <div>
-                <h2 className="text-xl font-bold text-white">Your Projects</h2>
-                <p className="mt-1 text-xs text-neutral-400">
-                  Everything you&apos;re building
+                <h2 className="text-xl font-bold text-white">
+                  {userWorkspaces.length === 0
+                    ? "Get Started"
+                    : "Your Business Pages"}
+                </h2>
+                <p className="mt-1 text-xs text-neutral-300">
+                  {userWorkspaces.length === 0
+                    ? "Create your first professional page"
+                    : "All your business pages in one place"}
                 </p>
               </div>
-              <ProjectFilterBar
-                totalCount={userWorkspaces.length}
-                filteredCount={filteredWorkspaces.length}
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                sortBy={sortBy}
-                onSortChange={setSortBy}
-                filter={filter}
-                onFilterChange={setFilter}
-                viewMode={viewMode}
-                onViewModeChange={setViewMode}
-              />
 
-              {/* Enhanced Empty State */}
+              {/* IMPROVED: Only show filter bar if user has projects */}
+              {userWorkspaces.length > 0 && (
+                <ProjectFilterBar
+                  totalCount={userWorkspaces.length}
+                  filteredCount={filteredWorkspaces.length}
+                  searchQuery={searchQuery}
+                  onSearchChange={setSearchQuery}
+                  sortBy={sortBy}
+                  onSortChange={setSortBy}
+                  filter={filter}
+                  onFilterChange={setFilter}
+                  viewMode={viewMode}
+                  onViewModeChange={setViewMode}
+                />
+              )}
+
+              {/* IMPROVED: Better empty state for small business owners */}
               {userWorkspaces.length === 0 && (
                 <m.div
                   initial={{ opacity: 0, y: 20 }}
@@ -711,13 +694,11 @@ export function DashboardScreen() {
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   className="relative flex flex-col items-center justify-center gap-6 rounded-2xl border-2 border-dashed border-border/50 bg-gradient-to-br from-muted/30 to-transparent py-20 text-center overflow-hidden"
                 >
-                  {/* Decorative background elements */}
                   <div className="absolute inset-0 opacity-50">
                     <div className="absolute top-10 left-10 h-32 w-32 rounded-full bg-primary/5 blur-3xl" />
                     <div className="absolute bottom-10 right-10 h-32 w-32 rounded-full bg-primary/5 blur-3xl" />
                   </div>
 
-                  {/* Icon with animation */}
                   <m.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -730,76 +711,71 @@ export function DashboardScreen() {
                     <div className="absolute inset-0 rounded-2xl bg-primary/20 blur-xl" />
                   </m.div>
 
-                  {/* Content */}
                   <m.div
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.3 }}
                     className="relative z-10 space-y-4 max-w-lg"
                   >
+                    {/* IMPROVED: More welcoming headline */}
                     <h3 className="text-2xl font-bold text-foreground">
-                      Create your project page
+                      Create Your Business Page
                     </h3>
+                    {/* IMPROVED: Clearer, less technical description */}
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Get a professional, shareable page for your project in
-                      minutes. Import from GitHub, add details, and share a
-                      single link with anyone—no login required to view.
+                      Get a professional, shareable page for your business in
+                      minutes. Add your details, upload photos, and get a link
+                      you can share anywhere— no technical skills or coding
+                      required.
                     </p>
                     <div className="grid sm:grid-cols-3 gap-3 text-left pt-2">
                       <div className="space-y-1">
                         <div className="text-primary text-lg font-bold">1</div>
                         <div className="text-xs font-medium text-foreground">
-                          Import or Create
+                          Tell Us About You
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          GitHub, URL, or start fresh
+                          Business name, what you do
                         </div>
                       </div>
                       <div className="space-y-1">
                         <div className="text-primary text-lg font-bold">2</div>
                         <div className="text-xs font-medium text-foreground">
-                          Add Details
+                          Add Your Info
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          Description, images, links
+                          Photos, contact details, links
                         </div>
                       </div>
                       <div className="space-y-1">
                         <div className="text-primary text-lg font-bold">3</div>
                         <div className="text-xs font-medium text-foreground">
-                          Get Your Link
+                          Share Your Link
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          Share anywhere, no login needed
+                          Anyone can view, no login needed
                         </div>
                       </div>
                     </div>
                   </m.div>
 
-                  {/* Actions */}
                   <m.div
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.4 }}
                     className="relative z-10 space-y-4"
                   >
+                    {/* IMPROVED: Better primary button text */}
                     <Button
                       onClick={() => setShowCreationModal(true)}
                       size="lg"
                       leftIcon={<Plus className="h-5 w-5" />}
                       className="shadow-lg hover:shadow-xl transition-all duration-200"
                     >
-                      Create New Project
+                      Create My Business Page
                     </Button>
+                    {/* IMPROVED: Less prominent GitHub option */}
                     <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                      <Button
-                        onClick={() => setShowURLImport(true)}
-                        variant="outline"
-                        size="sm"
-                        leftIcon={<Github className="h-4 w-4" />}
-                      >
-                        Import from GitHub
-                      </Button>
                       <Button
                         onClick={() => setShowFileImport(true)}
                         variant="outline"
@@ -808,10 +784,18 @@ export function DashboardScreen() {
                       >
                         Import from File
                       </Button>
+                      <Button
+                        onClick={() => setShowURLImport(true)}
+                        variant="ghost"
+                        size="sm"
+                        leftIcon={<Github className="h-4 w-4" />}
+                        className="text-xs"
+                      >
+                        Advanced: GitHub Import
+                      </Button>
                     </div>
                     <p className="text-xs text-muted-foreground text-center">
-                      Most projects go from import to shareable link in under 2
-                      minutes
+                      Most business pages are ready to share in under 5 minutes
                     </p>
                   </m.div>
                 </m.div>
@@ -842,7 +826,7 @@ export function DashboardScreen() {
                 </div>
               )}
 
-              {/* Enhanced No Results State */}
+              {/* No Results State */}
               {filteredWorkspaces.length === 0 && userWorkspaces.length > 0 && (
                 <m.div
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -854,10 +838,10 @@ export function DashboardScreen() {
                   </div>
                   <div className="space-y-2">
                     <h3 className="text-lg font-semibold text-foreground">
-                      No matching projects
+                      No matching pages
                     </h3>
                     <p className="text-sm text-muted-foreground max-w-sm">
-                      No projects match your current filters. Try adjusting your
+                      No pages match your current filters. Try adjusting your
                       search or filters.
                     </p>
                   </div>
@@ -880,7 +864,6 @@ export function DashboardScreen() {
 
           {/* Stats Sidebar */}
           <aside className="space-y-4">
-            {/* Profile Stats */}
             <Card
               variant="default"
               className="rounded-lg border border-white/10 bg-white/[0.03] backdrop-blur-sm"
@@ -897,9 +880,6 @@ export function DashboardScreen() {
               </CardContent>
             </Card>
 
-            {/* Profile Completion - Removed */}
-
-            {/* Skills - Only if user has any */}
             {((user.skills && user.skills.length > 0) ||
               (user.areasOfInterest && user.areasOfInterest.length > 0)) && (
               <ProfileSkills
@@ -965,7 +945,6 @@ export function DashboardScreen() {
         saving={saving}
       />
 
-      {/* Delete Confirmation Dialog */}
       {workspaceToDelete && (
         <WorkspaceDeleteDialog
           workspace={workspaceToDelete}
