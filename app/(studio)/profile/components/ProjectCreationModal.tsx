@@ -73,14 +73,13 @@ export function ProjectCreationModal({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">New Project</DialogTitle>
+          <DialogTitle className="text-xl font-bold">Create Your Business Page</DialogTitle>
           <DialogDescription>
-            Your project stays private until you choose to share it.
+            Your page stays private until you're ready to share it. No technical skills needed.
           </DialogDescription>
         </DialogHeader>
 
         <div className="py-4 space-y-6">
-          {/* Quick Start - Name and Create */}
           <m.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -88,11 +87,11 @@ export function ProjectCreationModal({
           >
             <div className="space-y-2">
               <Label htmlFor="project-name" className="text-sm font-medium">
-                Project Name
+                Business or Project Name
               </Label>
               <Input
                 id="project-name"
-                placeholder="My Project"
+                placeholder="e.g., Joe's Pizza, My Consulting Firm"
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
                 onKeyDown={(e) => {
@@ -114,50 +113,35 @@ export function ProjectCreationModal({
               {isCreating ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creating...
+                  Creating Your Page...
                 </>
               ) : (
-                "Create Project"
+                "Create My Page"
               )}
             </Button>
 
             <p className="text-xs text-muted-foreground text-center">
-              You can add details, links, and canvas data in the editor.
+              You'll add your details, photos, and contact info on the next screen.
             </p>
           </m.div>
 
-          {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs">
               <span className="bg-background px-3 text-muted-foreground">
-                Or import existing work
+                Already have content?
               </span>
             </div>
           </div>
 
-          {/* Import Options - Simple text links */}
           <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
             className="space-y-2"
           >
-            <button
-              onClick={() => {
-                handleClose();
-                onOpenURLImport();
-              }}
-              className="w-full text-left px-3 py-2 rounded-md hover:bg-muted transition-colors text-sm"
-            >
-              <span className="font-medium">Import from URL</span>
-              <span className="text-muted-foreground ml-2">
-                GitHub, website, or any link
-              </span>
-            </button>
-
             {onOpenFileImport && (
               <button
                 onClick={() => {
@@ -166,9 +150,9 @@ export function ProjectCreationModal({
                 }}
                 className="w-full text-left px-3 py-2 rounded-md hover:bg-muted transition-colors text-sm"
               >
-                <span className="font-medium">Upload file</span>
+                <span className="font-medium">Import from File</span>
                 <span className="text-muted-foreground ml-2">
-                  PDF, pitch deck, or docs
+                  Upload a PDF, document, or presentation
                 </span>
               </button>
             )}
@@ -176,13 +160,26 @@ export function ProjectCreationModal({
             <button
               onClick={() => {
                 handleClose();
-                onOpenBatchImport();
+                onOpenURLImport();
               }}
               className="w-full text-left px-3 py-2 rounded-md hover:bg-muted transition-colors text-sm"
             >
-              <span className="font-medium">Batch import</span>
+              <span className="font-medium">Import from Website</span>
               <span className="text-muted-foreground ml-2">
-                Multiple URLs at once
+                Your website URL or GitHub repository
+              </span>
+            </button>
+
+            <button
+              onClick={() => {
+                handleClose();
+                onOpenBatchImport();
+              }}
+              className="w-full text-left px-3 py-2 rounded-md hover:bg-muted transition-colors text-sm opacity-75"
+            >
+              <span className="font-medium">Import Multiple</span>
+              <span className="text-muted-foreground ml-2">
+                Advanced: Import several pages at once
               </span>
             </button>
           </m.div>
