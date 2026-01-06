@@ -1,16 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
 import { cn } from "@/lib/utils";
-import { BUFFALO_BRAND } from "@/tokens/brand";
 
 interface ProfileStatsProps {
   projects: number;
   pivots: number;
   publicProjects: number;
   versions: number;
-  comments?: number; // Optional for backwards compatibility
+  comments?: number;
 }
 
 interface StatCardProps {
@@ -19,6 +17,8 @@ interface StatCardProps {
   sublabel?: string;
   onClick?: () => void;
   clickable?: boolean;
+  gradient: string;
+  iconColor: string;
 }
 
 function StatCard({
@@ -27,47 +27,58 @@ function StatCard({
   sublabel,
   onClick,
   clickable = false,
+  gradient,
+  iconColor,
 }: StatCardProps) {
   const isEmpty = value === 0;
-
+  
   return (
     <button
       type="button"
       className={cn(
-        "group relative rounded-lg border transition-all duration-200 text-left w-full",
+        "group relative rounded-xl border transition-all duration-200 text-left w-full overflow-hidden",
         clickable &&
           !isEmpty && [
             "cursor-pointer",
-            "hover:border-primary/30 hover:bg-primary/5",
+            "hover:scale-[1.02]",
             "active:scale-[0.98]",
           ],
         !clickable && "cursor-default",
-        isEmpty && "opacity-50",
-        "border-border/50 bg-card/50",
+        isEmpty && "opacity-60",
+        "border-white/10 bg-gradient-to-br backdrop-blur-sm",
+        gradient,
       )}
       onClick={!isEmpty && clickable ? onClick : undefined}
       disabled={isEmpty || !clickable}
       aria-label={`${label}: ${value}`}
     >
-      <div className="p-4">
-        {/* Value */}
+      <div className={cn(
+        "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10",
+        gradient
+      )} />
+      
+      <div className="p-4 relative">
         <div
-          className="text-3xl font-bold tabular-nums leading-none tracking-tight mb-2"
-          style={{
-            color: !isEmpty ? BUFFALO_BRAND.blue.primary : undefined,
-          }}
+          className={cn(
+            "text-4xl font-bold tabular-nums leading-none tracking-tight mb-2",
+            "bg-gradient-to-br bg-clip-text text-transparent",
+            iconColor
+          )}
         >
           {value}
         </div>
-
-        {/* Label */}
-        <div className="text-sm font-medium text-foreground">{label}</div>
-
-        {/* Sublabel */}
+        
+        <div className="text-sm font-semibold text-white">{label}</div>
+        
         {sublabel && (
-          <div className="text-xs text-muted-foreground mt-0.5">{sublabel}</div>
+          <div className="text-xs text-neutral-300 mt-0.5">{sublabel}</div>
         )}
       </div>
+
+      <div className={cn(
+        "absolute top-0 right-0 w-20 h-20 opacity-20 blur-2xl rounded-full",
+        gradient
+      )} />
     </button>
   );
 }
@@ -79,7 +90,7 @@ export function ProfileStats({
   versions,
 }: ProfileStatsProps) {
   const router = useRouter();
-
+  
   const stats = [
     {
       value: projects,
@@ -91,17 +102,20 @@ export function ProfileStats({
           ?.scrollIntoView({ behavior: "smooth" });
       },
       clickable: true,
+      gradient: "from-blue-500/20 via-blue-600/10 to-purple-500/20",
+      iconColor: "from-blue-400 to-purple-400",
     },
     {
       value: publicProjects,
       label: "Published",
       sublabel: publicProjects === 1 ? "Public project" : "Public projects",
       onClick: () => router.push("/dashboard/discover"),
-      clickable: false, // Temporarily disabled - Discover page under redesign
+      clickable: false,
+      gradient: "from-green-500/20 via-emerald-600/10 to-teal-500/20",
+      iconColor: "from-green-400 to-teal-400",
     },
   ];
 
-  // Only show pivots if user has any
   if (pivots > 0) {
     stats.push({
       value: pivots,
@@ -111,10 +125,11 @@ export function ProfileStats({
         // Non-clickable stat
       },
       clickable: false,
+      gradient: "from-orange-500/20 via-amber-600/10 to-yellow-500/20",
+      iconColor: "from-orange-400 to-yellow-400",
     });
   }
 
-  // Only show versions if user has multiple
   if (versions > 1) {
     stats.push({
       value: versions,
@@ -124,6 +139,8 @@ export function ProfileStats({
         // Non-clickable stat
       },
       clickable: false,
+      gradient: "from-pink-500/20 via-rose-600/10 to-red-500/20",
+      iconColor: "from-pink-400 to-rose-400",
     });
   }
 
