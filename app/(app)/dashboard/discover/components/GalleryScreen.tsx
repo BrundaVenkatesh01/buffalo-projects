@@ -9,7 +9,7 @@ import { MatchesSection } from "./MatchesSection";
 
 import { ProjectCardGallery } from "@/components/projects/ProjectCardGallery";
 import { Badge, Button } from "@/components/unified";
-import { Loader2, Plus, Rocket } from "@/icons";
+import { Loader2, Plus, Rocket, Sparkles } from "@/icons";
 import { firebaseDatabase } from "@/services/firebaseDatabase";
 import { calculateMatches, type Match } from "@/services/matchingService";
 import { useAuthStore } from "@/stores/authStore";
@@ -17,13 +17,12 @@ import { useGalleryStore } from "@/stores/galleryStore";
 import type { ProjectCategory, Workspace } from "@/types";
 
 /**
- * GalleryScreen - Cold start optimized discovery
- *
- * Designed for early stage with few projects:
- * - "Early Access" messaging creates urgency
- * - 2-column grid feels fuller
- * - Prominent "Share your project" CTA
- * - Coming soon features to show momentum
+ * GalleryScreen - Discover Buffalo Projects & Businesses
+ * 
+ * Flexible discovery page for both:
+ * - Buffalo businesses
+ * - Personal projects
+ * - Community initiatives
  */
 export function GalleryScreen() {
   const { filters, sortBy } = useGalleryStore();
@@ -128,7 +127,6 @@ export function GalleryScreen() {
         const userWorkspaces = await firebaseDatabase.getUserWorkspaces(
           user.uid,
         );
-        // Aggregate all unique asks from user's projects
         const allAsks = userWorkspaces
           .flatMap((w) => w.asks || [])
           .filter((ask, index, self) => self.indexOf(ask) === index);
@@ -144,7 +142,6 @@ export function GalleryScreen() {
   // Calculate matches when userAsks or allWorkspaces change
   useEffect(() => {
     if (userAsks.length > 0 && allWorkspaces.length > 0) {
-      // Filter out user's own projects from matches
       const otherProjects = allWorkspaces.filter(
         (w) => w.ownerId !== user?.uid,
       );
@@ -224,7 +221,6 @@ export function GalleryScreen() {
       );
     }
 
-    // Sort
     if (sortBy === "recent") {
       result.sort((a, b) => {
         const aDate = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
@@ -239,7 +235,10 @@ export function GalleryScreen() {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+          <p className="text-sm text-neutral-400">Loading projects...</p>
+        </div>
       </div>
     );
   }
@@ -265,93 +264,120 @@ export function GalleryScreen() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero - Early Access messaging */}
-      <section className="border-b border-border py-8 md:py-12">
-        <div className="mx-auto max-w-5xl px-6">
+      
+      <section className="relative border-b border-border py-12 md:py-16 overflow-hidden">
+        {/* Gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
+        
+        <div className="relative mx-auto max-w-5xl px-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Badge className="bg-primary text-primary-foreground text-xs">
-                  Early Access
+              <div className="flex items-center gap-3 mb-3">
+                
+                <Badge className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-3 py-1 shadow-lg shadow-blue-500/50">
+                  <Sparkles className="h-3 w-3 mr-1 inline" />
+                  Buffalo Community
                 </Badge>
                 {projectCount > 0 && (
-                  <span className="text-xs text-muted-foreground">
-                    {projectCount} project{projectCount === 1 ? "" : "s"} shared
+                  <span className="text-sm font-semibold text-white bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full">
+                    {projectCount} {projectCount === 1 ? "project" : "projects"}
                   </span>
                 )}
               </div>
-              <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+              
+              <h1 className="text-3xl font-bold tracking-tight text-white md:text-4xl mb-2">
                 Discover Projects
               </h1>
-              <p className="mt-1 text-sm text-muted-foreground max-w-md">
-                Be among the first to explore what builders are creating. More
-                features coming soon.
+              
+              <p className="text-base text-neutral-200 max-w-xl leading-relaxed">
+                {projectCount === 0 
+                  ? "Be the first to showcase your project or business to the Buffalo community!"
+                  : "Explore projects, businesses, and ideas from Buffalo creators and entrepreneurs."}
               </p>
             </div>
 
-            {/* CTA - Share your project */}
+            
             <Link href="/workspace/new">
-              <Button size="sm" className="gap-1.5">
-                <Plus className="h-3.5 w-3.5" />
-                Share your project
+              <Button 
+                size="lg" 
+                className="gap-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-2xl shadow-purple-500/50 border-0 h-12 px-6"
+              >
+                <Plus className="h-5 w-5" />
+                <span className="font-semibold">Share Your Project</span>
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Matches Section - Personalized project matches */}
+      {/* Matches Section */}
       {matches.length > 0 && (
         <MatchesSection
           matches={matches}
           onSeeAll={() => {
-            // TODO: Navigate to filtered view or modal showing all matches
             console.warn("See all matches clicked");
           }}
         />
       )}
 
-      {/* Coming Soon features - show only if no matches */}
-      {matches.length === 0 && (
-        <section className="border-b border-border py-3 bg-muted/30">
+      
+      {matches.length === 0 && userAsks.length === 0 && (
+        <section className="border-b border-border py-4 bg-gradient-to-r from-blue-500/5 to-purple-500/5">
           <div className="mx-auto max-w-5xl px-6">
-            <p className="text-xs text-muted-foreground">
-              {userAsks.length > 0
-                ? "No matches found yet. Try adding gives to your projects!"
-                : "Add asks to your projects to see personalized matches here."}
+            <p className="text-sm text-neutral-300 text-center">
+              💡 <span className="font-semibold">Tip:</span> Add what you're looking for to your project to see personalized matches here!
             </p>
           </div>
         </section>
       )}
 
-      {/* Filter Bar - Simplified */}
+      {/* Filter Bar */}
       <FilterBar resultsCount={filteredWorkspaces.length} />
 
       {/* Gallery Grid */}
       <section className="py-8">
         <div className="mx-auto max-w-5xl px-6">
           {filteredWorkspaces.length === 0 ? (
-            /* Empty State - "Be the first" */
-            <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border p-12 text-center">
-              <Rocket className="h-8 w-8 text-muted-foreground mb-4" />
-              <h3 className="mb-2 text-lg font-semibold text-foreground">
-                Be the first
+            <div className="relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-white/20 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10 p-16 text-center overflow-hidden">
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl" />
+              
+              {/* Icon with gradient glow */}
+              <div className="relative mb-6">
+                <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 shadow-2xl shadow-purple-500/50 relative z-10">
+                  <Rocket className="h-10 w-10 text-white" />
+                </div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 blur-2xl opacity-50" />
+              </div>
+              
+              
+              <h3 className="mb-3 text-2xl font-bold text-white relative z-10">
+                Be the First ✨
               </h3>
-              <p className="mb-6 max-w-sm text-sm text-muted-foreground">
+              <p className="mb-8 max-w-md text-base text-neutral-200 relative z-10 leading-relaxed">
                 {filters.category !== "all" || filters.searchQuery
-                  ? "No projects match your filters yet. Be the first to share one!"
-                  : "No projects shared yet. Get in early and be the first to showcase your work."}
+                  ? "No projects match your search yet. Share yours and be the first!"
+                  : "No projects shared yet. Be a pioneer and showcase your work to the Buffalo community!"}
               </p>
               <Link href="/workspace/new">
-                <Button size="sm" className="gap-1.5">
-                  <Plus className="h-3.5 w-3.5" />
-                  Share your project
+                <Button 
+                  size="lg" 
+                  className="gap-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-2xl shadow-blue-500/50 relative z-10 h-12 px-8"
+                >
+                  <Plus className="h-5 w-5" />
+                  <span className="font-semibold">Share Your Project</span>
                 </Button>
               </Link>
+              <p className="mt-4 text-xs text-neutral-400 relative z-10">
+                Takes just a few minutes to create your page
+              </p>
             </div>
           ) : (
             <>
-              {/* 2-column grid (feels fuller with few projects) */}
+              {/* 2-column grid */}
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {filteredWorkspaces.map((workspace, index) => (
                   <ProjectCardGallery
@@ -365,25 +391,24 @@ export function GalleryScreen() {
               {/* Load more */}
               <div ref={observerTarget} className="mt-8 flex justify-center">
                 {loadingMore && (
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                    Loading...
+                  <div className="flex items-center gap-2 text-sm text-neutral-300">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Loading more...
                   </div>
                 )}
                 {!loadingMore && !hasMore && filteredWorkspaces.length > 0 && (
                   <div className="text-center">
-                    <p className="text-xs text-muted-foreground mb-3">
-                      That&apos;s all {filteredWorkspaces.length} project
-                      {filteredWorkspaces.length === 1 ? "" : "s"}
+                    <p className="text-sm text-neutral-300 mb-4">
+                      That's all {filteredWorkspaces.length} {filteredWorkspaces.length === 1 ? "project" : "projects"}! 🎉
                     </p>
                     <Link href="/workspace/new">
                       <Button
                         variant="outline"
                         size="sm"
-                        className="gap-1.5 text-xs"
+                        className="gap-2 border-white/20 hover:bg-white/10"
                       >
-                        <Plus className="h-3 w-3" />
-                        Add yours
+                        <Plus className="h-4 w-4" />
+                        Add Yours
                       </Button>
                     </Link>
                   </div>
