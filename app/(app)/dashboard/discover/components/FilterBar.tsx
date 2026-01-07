@@ -100,35 +100,32 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
     "All Categories";
 
   return (
-    <div className="sticky top-16 z-40 border-b border-white/[0.05] bg-background/98 backdrop-blur-xl">
+    <div className="sticky top-16 z-40 border-b border-white/10 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-6 py-5">
-        {/* Main Filter Row */}
         <div className="flex flex-wrap items-center gap-3">
-          {/* Search */}
           <div className="relative flex-1 min-w-[200px] max-w-xl">
-            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-blue-400" />
             <input
               type="text"
               placeholder="Search projects..."
               value={filters.searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-11 w-full rounded-xl border border-white/[0.08] bg-white/[0.02] pl-11 pr-4 text-sm text-white placeholder:text-neutral-500 focus:border-white/[0.20] focus:bg-white/[0.04] focus:outline-none transition-all duration-200"
+              className="h-11 w-full rounded-xl border border-blue-500/30 bg-white/5 pl-11 pr-4 text-sm text-white placeholder:text-neutral-400 focus:border-blue-500/50 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all duration-200"
             />
           </div>
 
-          {/* Category Dropdown */}
           <div className="relative">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setCategoryDropdownOpen(!categoryDropdownOpen)}
-              className="gap-2 h-11 rounded-xl border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/[0.12] text-neutral-400 hover:text-white transition-all duration-200"
+              className="gap-2 h-11 rounded-xl border-white/20 bg-white/10 hover:bg-white/15 hover:border-white/30 text-white font-medium transition-all duration-200"
             >
               {selectedCategoryLabel}
               <ChevronDown className="h-4 w-4" />
             </Button>
             {categoryDropdownOpen && (
-              <div className="absolute top-full left-0 mt-2 w-52 rounded-xl border border-white/[0.08] bg-neutral-950/98 backdrop-blur-xl shadow-2xl z-50 overflow-hidden">
+              <div className="absolute top-full left-0 mt-2 w-52 rounded-xl border border-white/20 bg-neutral-900/98 backdrop-blur-xl shadow-2xl z-50 overflow-hidden">
                 {CATEGORIES.map((cat) => (
                   <button
                     key={cat.value}
@@ -137,10 +134,10 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
                       setCategoryDropdownOpen(false);
                     }}
                     className={cn(
-                      "w-full px-4 py-2.5 text-left text-sm hover:bg-white/[0.06] transition-colors",
+                      "w-full px-4 py-2.5 text-left text-sm hover:bg-white/10 transition-colors",
                       filters.category === cat.value
-                        ? "bg-blue-500/10 text-blue-400 font-medium"
-                        : "text-neutral-400",
+                        ? "bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white font-semibold"
+                        : "text-neutral-300 hover:text-white",
                     )}
                   >
                     {cat.label}
@@ -150,15 +147,14 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
             )}
           </div>
 
-          {/* Location Filter */}
           <div className="flex gap-2">
             <Badge
               variant="outline"
               className={cn(
-                "cursor-pointer transition-all duration-200 h-11 rounded-xl px-4 border-white/[0.08]",
+                "cursor-pointer transition-all duration-200 h-11 rounded-xl px-4 font-semibold",
                 filters.location === "all"
-                  ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
-                  : "bg-white/[0.02] text-neutral-400 hover:bg-white/[0.05] hover:text-white hover:border-white/[0.12]",
+                  ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white border-blue-500/50 shadow-lg shadow-blue-500/50"
+                  : "bg-white/10 text-neutral-300 border-white/20 hover:bg-white/15 hover:text-white hover:border-white/30",
               )}
               onClick={() => setLocation("all")}
             >
@@ -167,10 +163,10 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
             <Badge
               variant="outline"
               className={cn(
-                "cursor-pointer transition-all duration-200 h-11 rounded-xl px-4 border-white/[0.08]",
+                "cursor-pointer transition-all duration-200 h-11 rounded-xl px-4 font-semibold",
                 filters.location === "buffalo"
-                  ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
-                  : "bg-white/[0.02] text-neutral-400 hover:bg-white/[0.05] hover:text-white hover:border-white/[0.12]",
+                  ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white border-blue-500/50 shadow-lg shadow-blue-500/50"
+                  : "bg-white/10 text-neutral-300 border-white/20 hover:bg-white/15 hover:text-white hover:border-white/30",
               )}
               onClick={() => setLocation("buffalo")}
             >
@@ -179,10 +175,10 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
             <Badge
               variant="outline"
               className={cn(
-                "cursor-pointer transition-all duration-200 h-11 rounded-xl px-4 border-white/[0.08]",
+                "cursor-pointer transition-all duration-200 h-11 rounded-xl px-4 font-semibold",
                 filters.location === "remote"
-                  ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
-                  : "bg-white/[0.02] text-neutral-400 hover:bg-white/[0.05] hover:text-white hover:border-white/[0.12]",
+                  ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white border-blue-500/50 shadow-lg shadow-blue-500/50"
+                  : "bg-white/10 text-neutral-300 border-white/20 hover:bg-white/15 hover:text-white hover:border-white/30",
               )}
               onClick={() => setLocation("remote")}
             >
@@ -190,44 +186,39 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
             </Badge>
           </div>
 
-          {/* Advanced Filters Toggle */}
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className="gap-2 h-11 rounded-xl border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/[0.12] text-neutral-400 hover:text-white transition-all duration-200"
+            className="gap-2 h-11 rounded-xl border-white/20 bg-white/10 hover:bg-white/15 hover:border-white/30 text-white font-medium transition-all duration-200"
           >
             <Filter className="h-4 w-4" />
             Advanced
           </Button>
 
-          {/* Clear Filters */}
           {hasActiveFilters && (
             <Button
               variant="ghost"
               size="sm"
               onClick={clearFilters}
-              className="gap-2 h-11 rounded-xl text-neutral-500 hover:text-white hover:bg-white/[0.04] transition-all duration-200"
+              className="gap-2 h-11 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all duration-200"
             >
               <X className="h-4 w-4" />
               Clear
             </Button>
           )}
 
-          {/* Results Count */}
           {resultsCount !== undefined && (
-            <div className="ml-auto hidden sm:block text-sm text-neutral-500">
+            <div className="ml-auto hidden sm:block text-sm font-semibold text-white/80">
               {resultsCount} {resultsCount === 1 ? "project" : "projects"}
             </div>
           )}
         </div>
 
-        {/* Advanced Filters */}
         {showAdvanced && (
-          <div className="mt-6 space-y-6 border-t border-white/[0.05] pt-6">
-            {/* Stage Filter */}
+          <div className="mt-6 space-y-6 border-t border-white/10 pt-6">
             <div>
-              <label className="mb-3 block text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+              <label className="mb-3 block text-xs font-bold text-white uppercase tracking-wider">
                 Project Stage
               </label>
               <div className="flex flex-wrap gap-2">
@@ -236,10 +227,10 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
                     key={stage.value}
                     variant="outline"
                     className={cn(
-                      "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 border-white/[0.08]",
+                      "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 font-medium",
                       filters.stages.includes(stage.value)
-                        ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
-                        : "bg-white/[0.02] text-neutral-400 hover:bg-white/[0.05] hover:text-white hover:border-white/[0.12]",
+                        ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-blue-500/50 shadow-lg shadow-blue-500/50"
+                        : "bg-white/10 text-neutral-300 border-white/20 hover:bg-white/15 hover:text-white hover:border-white/30",
                     )}
                     onClick={() => handleStageToggle(stage.value)}
                   >
@@ -249,9 +240,8 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
               </div>
             </div>
 
-            {/* Gives Filter */}
             <div>
-              <label className="mb-3 block text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+              <label className="mb-3 block text-xs font-bold text-white uppercase tracking-wider">
                 Offering (Gives)
               </label>
               <div className="flex flex-wrap gap-2">
@@ -260,10 +250,10 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
                     key={give}
                     variant="outline"
                     className={cn(
-                      "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 border-white/[0.08]",
+                      "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 font-medium",
                       filters.gives.includes(give)
-                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
-                        : "bg-white/[0.02] text-neutral-400 hover:bg-white/[0.05] hover:text-white hover:border-white/[0.12]",
+                        ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-green-500/50 shadow-lg shadow-green-500/50"
+                        : "bg-white/10 text-neutral-300 border-white/20 hover:bg-white/15 hover:text-white hover:border-white/30",
                     )}
                     onClick={() => handleGiveToggle(give)}
                   >
@@ -273,9 +263,8 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
               </div>
             </div>
 
-            {/* Asks Filter */}
             <div>
-              <label className="mb-3 block text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+              <label className="mb-3 block text-xs font-bold text-white uppercase tracking-wider">
                 Looking For (Asks)
               </label>
               <div className="flex flex-wrap gap-2">
@@ -284,10 +273,10 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
                     key={ask}
                     variant="outline"
                     className={cn(
-                      "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 border-white/[0.08]",
+                      "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 font-medium",
                       filters.asks.includes(ask)
-                        ? "bg-purple-500/10 text-purple-400 border-purple-500/30"
-                        : "bg-white/[0.02] text-neutral-400 hover:bg-white/[0.05] hover:text-white hover:border-white/[0.12]",
+                        ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-500/50 shadow-lg shadow-purple-500/50"
+                        : "bg-white/10 text-neutral-300 border-white/20 hover:bg-white/15 hover:text-white hover:border-white/30",
                     )}
                     onClick={() => handleAskToggle(ask)}
                   >
@@ -297,19 +286,18 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
               </div>
             </div>
 
-            {/* Sort By */}
             <div>
-              <label className="mb-3 block text-xs font-semibold text-neutral-400 uppercase tracking-wider">
+              <label className="mb-3 block text-xs font-bold text-white uppercase tracking-wider">
                 Sort By
               </label>
               <div className="flex flex-wrap gap-2">
                 <Badge
                   variant="outline"
                   className={cn(
-                    "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 border-white/[0.08]",
+                    "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 font-medium",
                     sortBy === "recent"
-                      ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
-                      : "bg-white/[0.02] text-neutral-400 hover:bg-white/[0.05] hover:text-white hover:border-white/[0.12]",
+                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white border-blue-500/50 shadow-lg shadow-blue-500/50"
+                      : "bg-white/10 text-neutral-300 border-white/20 hover:bg-white/15 hover:text-white hover:border-white/30",
                   )}
                   onClick={() => setSortBy("recent")}
                 >
@@ -318,10 +306,10 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
                 <Badge
                   variant="outline"
                   className={cn(
-                    "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 border-white/[0.08]",
+                    "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 font-medium",
                     sortBy === "popular"
-                      ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
-                      : "bg-white/[0.02] text-neutral-400 hover:bg-white/[0.05] hover:text-white hover:border-white/[0.12]",
+                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white border-blue-500/50 shadow-lg shadow-blue-500/50"
+                      : "bg-white/10 text-neutral-300 border-white/20 hover:bg-white/15 hover:text-white hover:border-white/30",
                   )}
                   onClick={() => setSortBy("popular")}
                 >
@@ -330,10 +318,10 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
                 <Badge
                   variant="outline"
                   className={cn(
-                    "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 border-white/[0.08]",
+                    "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 font-medium",
                     sortBy === "comments"
-                      ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
-                      : "bg-white/[0.02] text-neutral-400 hover:bg-white/[0.05] hover:text-white hover:border-white/[0.12]",
+                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white border-blue-500/50 shadow-lg shadow-blue-500/50"
+                      : "bg-white/10 text-neutral-300 border-white/20 hover:bg-white/15 hover:text-white hover:border-white/30",
                   )}
                   onClick={() => setSortBy("comments")}
                 >
@@ -342,10 +330,10 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
                 <Badge
                   variant="outline"
                   className={cn(
-                    "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 border-white/[0.08]",
+                    "cursor-pointer transition-all duration-200 rounded-full px-3 py-1.5 font-medium",
                     sortBy === "trending"
-                      ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
-                      : "bg-white/[0.02] text-neutral-400 hover:bg-white/[0.05] hover:text-white hover:border-white/[0.12]",
+                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white border-blue-500/50 shadow-lg shadow-blue-500/50"
+                      : "bg-white/10 text-neutral-300 border-white/20 hover:bg-white/15 hover:text-white hover:border-white/30",
                   )}
                   onClick={() => setSortBy("trending")}
                 >
@@ -356,13 +344,12 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
           </div>
         )}
 
-        {/* Active Filter Pills */}
         {hasActiveFilters && (
           <div className="mt-4 flex flex-wrap gap-2">
             {filters.category !== "all" && (
               <Badge
                 variant="outline"
-                className="gap-1.5 rounded-full px-3 py-1.5 bg-blue-500/10 text-blue-400 border-blue-500/30 group"
+                className="gap-1.5 rounded-full px-3 py-1.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white border-blue-500/50 shadow-lg group"
               >
                 {selectedCategoryLabel}
                 <X
@@ -378,7 +365,7 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
               <Badge
                 key={stage}
                 variant="outline"
-                className="gap-1.5 rounded-full px-3 py-1.5 bg-blue-500/10 text-blue-400 border-blue-500/30 group"
+                className="gap-1.5 rounded-full px-3 py-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-blue-500/50 shadow-lg group"
               >
                 {STAGES.find((s) => s.value === stage)?.label}
                 <X
@@ -394,7 +381,7 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
               <Badge
                 key={give}
                 variant="outline"
-                className="gap-1.5 rounded-full px-3 py-1.5 bg-emerald-500/10 text-emerald-400 border-emerald-500/30 group"
+                className="gap-1.5 rounded-full px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white border-green-500/50 shadow-lg group"
               >
                 {give}
                 <X
@@ -410,7 +397,7 @@ export function FilterBar({ resultsCount }: FilterBarProps) {
               <Badge
                 key={ask}
                 variant="outline"
-                className="gap-1.5 rounded-full px-3 py-1.5 bg-purple-500/10 text-purple-400 border-purple-500/30 group"
+                className="gap-1.5 rounded-full px-3 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-500/50 shadow-lg group"
               >
                 {ask}
                 <X
