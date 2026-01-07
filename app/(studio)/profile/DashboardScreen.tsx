@@ -1,5 +1,5 @@
 "use client";
-/* eslint-disable @typescript-eslint/no-misused-promises, @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 
 import { m } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -29,7 +29,15 @@ import { ImportDialogV2 } from "@/components/import";
 import { WelcomeModal } from "@/components/onboarding";
 import { Button, Card, CardContent, ProjectCard } from "@/components/unified";
 import { WorkspaceDeleteDialog } from "@/components/workspace/publishing/WorkspaceDeleteDialog";
-import { Plus, FileText, Github, Download, Upload, Users } from "@/icons";
+import {
+  Plus,
+  FileText,
+  Github,
+  Download,
+  Upload,
+  Users,
+  Sparkles,
+} from "@/icons";
 import { cn } from "@/lib/utils";
 import { firebaseDatabase } from "@/services/firebaseDatabase";
 import {
@@ -50,58 +58,37 @@ export function DashboardScreen() {
   const { workspaces, createWorkspace, publishWorkspace, unpublishWorkspace } =
     useWorkspaceStore();
 
-  // Profile editing state
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
-
-  // Creation modal state
   const [showCreationModal, setShowCreationModal] = useState(false);
-
-  // Import dialog state
   const [showURLImport, setShowURLImport] = useState(false);
   const [showBatchImport, setShowBatchImport] = useState(false);
   const [showFileImport, setShowFileImport] = useState(false);
-
-  // Publish dialog state
   const [twentySixDialogOpen, setTwentySixDialogOpen] = useState(false);
   const [selectedWorkspaceForPublish] = useState<Workspace | null>(null);
-
-  // Delete dialog state
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [workspaceToDelete, setWorkspaceToDelete] = useState<Workspace | null>(
     null,
   );
-
-  // Filter/sort state
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<ProjectSortOption>("newest");
   const [filter, setFilter] = useState<ProjectFilterOption>("all");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
-
-  // GitHub connection state
   const [githubConnection, setGithubConnection] =
     useState<GitHubConnection | null>(null);
 
   const displayName = useMemo(() => {
-    if (!user) {
-      return "";
-    }
-    if (user.displayName) {
-      return user.displayName;
-    }
+    if (!user) {return "";}
+    if (user.displayName) {return user.displayName;}
     if (user.firstName || user.lastName) {
       return [user.firstName, user.lastName].filter(Boolean).join(" ");
     }
-    if (user.email) {
-      return user.email.split("@")[0] || "";
-    }
+    if (user.email) {return user.email.split("@")[0] || "";}
     return "Anonymous User";
   }, [user]);
 
   const initials = useMemo(() => {
-    if (!user) {
-      return "?";
-    }
+    if (!user) {return "?";}
     if (user.firstName && user.lastName) {
       return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
     }
@@ -111,25 +98,19 @@ export function DashboardScreen() {
         ? `${parts[0]![0]}${parts[parts.length - 1]![0]}`.toUpperCase()
         : parts[0]!.substring(0, 2).toUpperCase();
     }
-    if (user.email) {
-      return user.email[0]!.toUpperCase();
-    }
+    if (user.email) {return user.email[0]!.toUpperCase();}
     return "?";
   }, [user]);
 
   const memberSince = useMemo(() => {
-    if (!user?.createdAt) {
-      return "Recently";
-    }
+    if (!user?.createdAt) {return "Recently";}
     try {
       const createdAt = user.createdAt as unknown;
       const date =
         createdAt instanceof Date
           ? createdAt
           : new Date(createdAt as string | number);
-      if (isNaN(date.getTime())) {
-        return "Recently";
-      }
+      if (isNaN(date.getTime())) {return "Recently";}
       return date.toLocaleDateString("en-US", {
         month: "long",
         year: "numeric",
@@ -139,10 +120,8 @@ export function DashboardScreen() {
     }
   }, [user?.createdAt]);
 
-  // Use custom hook for statistics
   const stats = useProfileStats(workspaces, user?.uid);
 
-  // Load GitHub connection on mount
   useEffect(() => {
     if (user?.uid) {
       githubOAuthService
@@ -152,20 +131,14 @@ export function DashboardScreen() {
     }
   }, [user?.uid]);
 
-  // Check for GitHub OAuth callback success/error
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
+    if (typeof window === "undefined") {return;}
     const params = new URLSearchParams(window.location.search);
     if (params.get("github_connected") === "true") {
       toast.success(
         "GitHub connected successfully! You can now import private repositories.",
       );
-      // Remove query param
       window.history.replaceState({}, "", window.location.pathname);
-      // Reload connection
       if (user?.uid) {
         githubOAuthService
           .getConnection(user.uid)
@@ -179,7 +152,6 @@ export function DashboardScreen() {
     }
   }, [user?.uid]);
 
-  // Filter workspaces for current user
   const userWorkspaces = useMemo(
     () =>
       workspaces.filter(
@@ -188,41 +160,26 @@ export function DashboardScreen() {
     [workspaces, user?.uid],
   );
 
-  // Apply filters and sorting
   const filteredWorkspaces = useMemo(() => {
     return userWorkspaces
       .filter((w) => {
-        // Search filter
         if (
           searchQuery &&
           !w.projectName.toLowerCase().includes(searchQuery.toLowerCase())
         ) {
           return false;
         }
-
-        // Visibility filter
-        if (filter === "public" && !w.isPublic) {
-          return false;
-        }
-        if (filter === "private" && w.isPublic) {
-          return false;
-        }
-        if (filter === "twentysix" && !w.isForTwentySix) {
-          return false;
-        }
-
-        // Stage filter
+        if (filter === "public" && !w.isPublic) {return false;}
+        if (filter === "private" && w.isPublic) {return false;}
+        if (filter === "twentysix" && !w.isForTwentySix) {return false;}
         if (
           filter !== "all" &&
           filter !== "public" &&
           filter !== "private" &&
           filter !== "twentysix"
         ) {
-          if (w.stage !== filter) {
-            return false;
-          }
+          if (w.stage !== filter) {return false;}
         }
-
         return true;
       })
       .sort((a, b) => {
@@ -261,10 +218,7 @@ export function DashboardScreen() {
     skills?: string[];
     areasOfInterest?: string[];
   }) => {
-    if (!user) {
-      return;
-    }
-
+    if (!user) {return;}
     try {
       setSaving(true);
       await updateProfile(updates);
@@ -279,7 +233,6 @@ export function DashboardScreen() {
     }
   };
 
-  // Import handlers
   const handleFileImport = async (result: ImportResult) => {
     const stageMap: Record<string, UnifiedImportResult["stage"]> = {
       idea: "idea",
@@ -287,7 +240,6 @@ export function DashboardScreen() {
       testing: "testing",
       launched: "launching",
     };
-
     const unifiedResult: UnifiedImportResult = {
       projectName: result.projectName,
       oneLiner: result.oneLiner,
@@ -302,7 +254,6 @@ export function DashboardScreen() {
         : `import-${Date.now()}`,
       sourceType: "file",
     };
-
     await handleSingleImport(unifiedResult);
   };
 
@@ -316,20 +267,16 @@ export function DashboardScreen() {
         oneLiner: result.oneLiner,
         publicLink: result.sourceURL,
       });
-
       const updates: Partial<Workspace> = {
         embeds: result.embeds,
         githubStats: result.githubStats,
       };
-
       if (result.bmcData && Object.keys(result.bmcData).length > 0) {
         updates.bmcData = { ...workspace.bmcData, ...result.bmcData };
       }
-
       if (result.screenshot) {
         updates.assets = { coverImage: result.screenshot };
       }
-
       await firebaseDatabase.updateWorkspace(workspace.code, updates);
       toast.success(`Imported: ${result.projectName}`);
       router.push(`/edit/${workspace.code}`);
@@ -346,7 +293,6 @@ export function DashboardScreen() {
   const handleBatchImport = async (results: UnifiedImportResult[]) => {
     try {
       let successCount = 0;
-
       for (const result of results) {
         try {
           const workspace = await createWorkspace({
@@ -357,27 +303,22 @@ export function DashboardScreen() {
             oneLiner: result.oneLiner,
             publicLink: result.sourceURL,
           });
-
           const updates: Partial<Workspace> = {
             embeds: result.embeds,
             githubStats: result.githubStats,
           };
-
           if (result.bmcData && Object.keys(result.bmcData).length > 0) {
             updates.bmcData = { ...workspace.bmcData, ...result.bmcData };
           }
-
           if (result.screenshot) {
             updates.assets = { coverImage: result.screenshot };
           }
-
           await firebaseDatabase.updateWorkspace(workspace.code, updates);
           successCount++;
         } catch (error) {
           console.error(`Failed to import ${result.projectName}:`, error);
         }
       }
-
       if (successCount > 0) {
         toast.success(
           `Successfully imported ${successCount} of ${results.length} project${results.length !== 1 ? "s" : ""}!`,
@@ -433,13 +374,11 @@ export function DashboardScreen() {
   ) => {
     try {
       await publishWorkspace(workspaceId);
-
       if (options.isForTwentySix) {
         await firebaseDatabase.updateWorkspace(workspaceId, {
           isForTwentySix: true,
         });
       }
-
       toast.success("Published for 26 under 26! ✨");
     } catch (error) {
       console.error("Publish error:", error);
@@ -455,7 +394,6 @@ export function DashboardScreen() {
     await updateProfile({ areasOfInterest: interests });
   };
 
-  // Auth guard
   if (!user && !loading) {
     return (
       <div className="mx-auto flex h-full max-w-xl flex-col items-center justify-center gap-4 px-4 py-24 text-center">
@@ -478,7 +416,6 @@ export function DashboardScreen() {
     );
   }
 
-  // Loading state
   if (loading || !user) {
     return (
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -491,36 +428,24 @@ export function DashboardScreen() {
                   <div className="h-10 w-64 rounded-lg bg-white/10 animate-pulse" />
                   <div className="h-4 w-48 rounded bg-white/5 animate-pulse" />
                 </div>
-                <div className="flex gap-2">
-                  <div className="h-6 w-32 rounded-full bg-white/10 animate-pulse" />
-                  <div className="h-6 w-28 rounded-full bg-white/10 animate-pulse" />
-                </div>
               </div>
             </div>
-            <div className="flex gap-3">
-              <div className="h-10 w-36 rounded-lg bg-white/10 animate-pulse" />
-              <div className="h-10 w-24 rounded-lg bg-white/10 animate-pulse" />
-            </div>
-            <div className="h-12 rounded-lg bg-white/10 animate-pulse" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[...Array(4)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-64 rounded-lg bg-gradient-to-br from-white/10 to-white/5 animate-pulse"
-                />
-              ))}
-            </div>
+            <div className="h-80 rounded-2xl bg-white/10 animate-pulse" />
           </div>
           <div className="space-y-6">
             <div className="h-80 rounded-2xl bg-white/10 animate-pulse" />
-            <div className="h-48 rounded-lg bg-white/10 animate-pulse" />
-            <div className="h-32 rounded-lg bg-white/10 animate-pulse" />
-            <div className="h-64 rounded-lg bg-white/10 animate-pulse" />
           </div>
         </div>
       </div>
     );
   }
+
+  const greetingTime = (() => {
+    const hour = new Date().getHours();
+    if (hour < 12) {return "Good morning";}
+    if (hour < 18) {return "Good afternoon";}
+    return "Good evening";
+  })();
 
   return (
     <>
@@ -547,240 +472,85 @@ export function DashboardScreen() {
               />
             </m.div>
 
-            {/* IMPROVED: Better welcome message for small business owners */}
-            <m.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-            >
-              <Card className="bg-white/[0.03] backdrop-blur-sm border-white/10">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1 min-w-0">
-                      <h2 className="text-lg font-semibold text-white mb-1">
-                        {(() => {
-                          const hour = new Date().getHours();
-                          if (hour < 12) {return "Good morning"};
-                          if (hour < 18) {return "Good afternoon"};
-                          return "Good evening";
-                        })()}
-                        , {displayName.split(" ")[0] || displayName}! 👋
+            {userWorkspaces.length === 0 ? (
+              <m.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="relative rounded-3xl border-2 border-dashed border-white/20 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 backdrop-blur-sm overflow-hidden"
+              >
+                <div className="absolute inset-0 opacity-40">
+                  <div className="absolute top-10 right-10 h-40 w-40 rounded-full bg-blue-500/30 blur-3xl" />
+                  <div className="absolute bottom-10 left-10 h-40 w-40 rounded-full bg-purple-500/30 blur-3xl" />
+                </div>
+
+                <div className="relative z-10 p-8 md:p-12">
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                        {greetingTime},{" "}
+                        {displayName.split(" ")[0] || displayName}! 👋
                       </h2>
-                      {userWorkspaces.length === 0 ? (
-                        /* IMPROVED: More welcoming for small business owners */
-                        <p className="text-sm text-neutral-300">
-                          Ready to showcase your business? Create a professional
-                          page in minutes—no technical skills needed.
-                        </p>
-                      ) : (
-                        <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-300">
-                          <span>
-                            <strong className="text-white">
-                              {stats.projects}
-                            </strong>{" "}
-                            {stats.projects === 1 ? "page" : "pages"}
-                          </span>
-                          {stats.publicProjects > 0 && (
-                            <>
-                              <span className="text-white/20">•</span>
-                              <span>
-                                <strong className="text-white">
-                                  {stats.publicProjects}
-                                </strong>{" "}
-                                published
-                              </span>
-                            </>
-                          )}
-                          {stats.pivots > 0 && (
-                            <>
-                              <span className="text-white/20">•</span>
-                              <span>
-                                <strong className="text-white">
-                                  {stats.pivots}
-                                </strong>{" "}
-                                {stats.pivots === 1 ? "pivot" : "pivots"}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      )}
+                      <p className="text-neutral-300 text-sm">
+                        Ready to showcase your business to Buffalo?
+                      </p>
                     </div>
-                    {userWorkspaces.length === 0 && (
-                      <Button
-                        onClick={() => setShowCreationModal(true)}
-                        leftIcon={<Plus className="h-4 w-4" />}
-                        size="sm"
-                      >
-                        Create Page
-                      </Button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </m.div>
-
-            {/* Quick Actions - Only show if user has projects */}
-            {userWorkspaces.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  onClick={() => setShowCreationModal(true)}
-                  leftIcon={<Plus className="h-4 w-4" />}
-                  size="sm"
-                >
-                  Create Page
-                </Button>
-                <Button
-                  onClick={() => setShowURLImport(true)}
-                  variant="outline"
-                  leftIcon={<Download className="h-4 w-4" />}
-                  size="sm"
-                >
-                  Import
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => router.push("/dashboard/groups")}
-                  leftIcon={<Users className="h-4 w-4" />}
-                >
-                  Groups
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => router.push("/settings")}
-                >
-                  Settings
-                </Button>
-              </div>
-            )}
-
-            {/* IMPROVED: Better section title */}
-            <div className="space-y-3" id="profile-projects">
-              <div>
-                <h2 className="text-xl font-bold text-white">
-                  {userWorkspaces.length === 0
-                    ? "Get Started"
-                    : "Your Business Pages"}
-                </h2>
-                <p className="mt-1 text-xs text-neutral-300">
-                  {userWorkspaces.length === 0
-                    ? "Create your first professional page"
-                    : "All your business pages in one place"}
-                </p>
-              </div>
-
-              {/* IMPROVED: Only show filter bar if user has projects */}
-              {userWorkspaces.length > 0 && (
-                <ProjectFilterBar
-                  totalCount={userWorkspaces.length}
-                  filteredCount={filteredWorkspaces.length}
-                  searchQuery={searchQuery}
-                  onSearchChange={setSearchQuery}
-                  sortBy={sortBy}
-                  onSortChange={setSortBy}
-                  filter={filter}
-                  onFilterChange={setFilter}
-                  viewMode={viewMode}
-                  onViewModeChange={setViewMode}
-                />
-              )}
-
-              {/* IMPROVED: Better empty state for small business owners */}
-              {userWorkspaces.length === 0 && (
-                <m.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  className="relative flex flex-col items-center justify-center gap-6 rounded-2xl border-2 border-dashed border-border/50 bg-gradient-to-br from-muted/30 to-transparent py-20 text-center overflow-hidden"
-                >
-                  <div className="absolute inset-0 opacity-50">
-                    <div className="absolute top-10 left-10 h-32 w-32 rounded-full bg-primary/5 blur-3xl" />
-                    <div className="absolute bottom-10 right-10 h-32 w-32 rounded-full bg-primary/5 blur-3xl" />
+                    <Sparkles className="h-8 w-8 text-yellow-400" />
                   </div>
 
-                  <m.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                    className="relative"
-                  >
-                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 shadow-lg relative z-10">
-                      <Plus className="h-10 w-10 text-primary" />
-                    </div>
-                    <div className="absolute inset-0 rounded-2xl bg-primary/20 blur-xl" />
-                  </m.div>
-
-                  <m.div
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                    className="relative z-10 space-y-4 max-w-lg"
-                  >
-                    {/* IMPROVED: More welcoming headline */}
-                    <h3 className="text-2xl font-bold text-foreground">
-                      Create Your Business Page
-                    </h3>
-                    {/* IMPROVED: Clearer, less technical description */}
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Get a professional, shareable page for your business in
-                      minutes. Add your details, upload photos, and get a link
-                      you can share anywhere— no technical skills or coding
-                      required.
-                    </p>
-                    <div className="grid sm:grid-cols-3 gap-3 text-left pt-2">
-                      <div className="space-y-1">
-                        <div className="text-primary text-lg font-bold">1</div>
-                        <div className="text-xs font-medium text-foreground">
-                          Tell Us About You
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Business name, what you do
-                        </div>
+                  <div className="grid md:grid-cols-3 gap-4 mb-8">
+                    <div className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
+                      <div className="text-3xl font-bold text-blue-400 mb-1">
+                        1
                       </div>
-                      <div className="space-y-1">
-                        <div className="text-primary text-lg font-bold">2</div>
-                        <div className="text-xs font-medium text-foreground">
-                          Add Your Info
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Photos, contact details, links
-                        </div>
+                      <div className="text-sm font-semibold text-white mb-1">
+                        Tell Us About You
                       </div>
-                      <div className="space-y-1">
-                        <div className="text-primary text-lg font-bold">3</div>
-                        <div className="text-xs font-medium text-foreground">
-                          Share Your Link
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Anyone can view, no login needed
-                        </div>
+                      <div className="text-xs text-neutral-400">
+                        Business name, what you do
                       </div>
                     </div>
-                  </m.div>
+                    <div className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
+                      <div className="text-3xl font-bold text-purple-400 mb-1">
+                        2
+                      </div>
+                      <div className="text-sm font-semibold text-white mb-1">
+                        Add Your Info
+                      </div>
+                      <div className="text-xs text-neutral-400">
+                        Photos, contact details, links
+                      </div>
+                    </div>
+                    <div className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
+                      <div className="text-3xl font-bold text-pink-400 mb-1">
+                        3
+                      </div>
+                      <div className="text-sm font-semibold text-white mb-1">
+                        Share Your Link
+                      </div>
+                      <div className="text-xs text-neutral-400">
+                        Anyone can view, no login needed
+                      </div>
+                    </div>
+                  </div>
 
-                  <m.div
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.4 }}
-                    className="relative z-10 space-y-4"
-                  >
-                    {/* IMPROVED: Better primary button text */}
+                  <div className="flex flex-col items-center gap-4">
                     <Button
                       onClick={() => setShowCreationModal(true)}
                       size="lg"
                       leftIcon={<Plus className="h-5 w-5" />}
-                      className="shadow-lg hover:shadow-xl transition-all duration-200"
+                      className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-2xl shadow-purple-500/50 h-14 px-8 text-lg font-semibold"
                     >
                       Create My Business Page
                     </Button>
-                    {/* IMPROVED: Less prominent GitHub option */}
-                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
+
+                    <div className="flex flex-wrap gap-2 justify-center">
                       <Button
                         onClick={() => setShowFileImport(true)}
                         variant="outline"
                         size="sm"
                         leftIcon={<Upload className="h-4 w-4" />}
+                        className="border-white/20 hover:bg-white/10"
                       >
                         Import from File
                       </Button>
@@ -789,80 +559,140 @@ export function DashboardScreen() {
                         variant="ghost"
                         size="sm"
                         leftIcon={<Github className="h-4 w-4" />}
-                        className="text-xs"
+                        className="text-neutral-400 hover:text-white hover:bg-white/5"
                       >
                         Advanced: GitHub Import
                       </Button>
                     </div>
-                    <p className="text-xs text-muted-foreground text-center">
-                      Most business pages are ready to share in under 5 minutes
-                    </p>
-                  </m.div>
-                </m.div>
-              )}
 
-              {/* Projects Grid */}
-              {filteredWorkspaces.length > 0 && (
-                <div
-                  className={cn(
-                    "grid gap-3",
-                    viewMode === "grid" && "grid-cols-1 md:grid-cols-2",
-                    viewMode === "list" && "grid-cols-1",
-                    viewMode === "compact" &&
-                      "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
-                  )}
-                >
-                  {filteredWorkspaces.map((workspace) => (
-                    <ProjectCard
-                      key={workspace.id || workspace.code}
-                      workspace={workspace}
-                      variant="compact"
-                      context="editor"
-                      onDelete={handleDeleteWorkspace}
-                      onViewPublic={handleViewPublicWorkspace}
-                      onToggleVisibility={handleToggleVisibility}
-                    />
-                  ))}
+                    <p className="text-xs text-neutral-400 text-center">
+                      ⚡ Most pages are ready in under 5 minutes • No coding
+                      required
+                    </p>
+                  </div>
                 </div>
-              )}
-
-              {/* No Results State */}
-              {filteredWorkspaces.length === 0 && userWorkspaces.length > 0 && (
-                <m.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed bg-muted/20 py-16 text-center"
-                >
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted/50">
-                    <FileText className="h-8 w-8 text-muted-foreground" />
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-semibold text-foreground">
-                      No matching pages
-                    </h3>
-                    <p className="text-sm text-muted-foreground max-w-sm">
-                      No pages match your current filters. Try adjusting your
-                      search or filters.
-                    </p>
-                  </div>
+              </m.div>
+            ) : (
+              <>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    onClick={() => setShowCreationModal(true)}
+                    leftIcon={<Plus className="h-4 w-4" />}
+                    size="sm"
+                    className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg"
+                  >
+                    Create Page
+                  </Button>
+                  <Button
+                    onClick={() => setShowURLImport(true)}
+                    variant="outline"
+                    leftIcon={<Download className="h-4 w-4" />}
+                    size="sm"
+                  >
+                    Import
+                  </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => {
-                      setSearchQuery("");
-                      setFilter("all");
-                      setSortBy("newest");
-                    }}
-                    className="mt-2"
+                    onClick={() => router.push("/dashboard/groups")}
+                    leftIcon={<Users className="h-4 w-4" />}
                   >
-                    Clear All Filters
+                    Groups
                   </Button>
-                </m.div>
-              )}
-            </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => router.push("/settings")}
+                  >
+                    Settings
+                  </Button>
+                </div>
+
+                <div className="space-y-3" id="profile-projects">
+                  <div>
+                    <h2 className="text-xl font-bold text-white">
+                      Your Business Pages
+                    </h2>
+                    <p className="mt-1 text-xs text-neutral-300">
+                      All your business pages in one place
+                    </p>
+                  </div>
+
+                  <ProjectFilterBar
+                    totalCount={userWorkspaces.length}
+                    filteredCount={filteredWorkspaces.length}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    sortBy={sortBy}
+                    onSortChange={setSortBy}
+                    filter={filter}
+                    onFilterChange={setFilter}
+                    viewMode={viewMode}
+                    onViewModeChange={setViewMode}
+                  />
+
+                  {filteredWorkspaces.length > 0 && (
+                    <div
+                      className={cn(
+                        "grid gap-3",
+                        viewMode === "grid" && "grid-cols-1 md:grid-cols-2",
+                        viewMode === "list" && "grid-cols-1",
+                        viewMode === "compact" &&
+                          "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+                      )}
+                    >
+                      {filteredWorkspaces.map((workspace) => (
+                        <ProjectCard
+                          key={workspace.id || workspace.code}
+                          workspace={workspace}
+                          variant="compact"
+                          context="editor"
+                          onDelete={handleDeleteWorkspace}
+                          onViewPublic={handleViewPublicWorkspace}
+                          onToggleVisibility={handleToggleVisibility}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {filteredWorkspaces.length === 0 &&
+                    userWorkspaces.length > 0 && (
+                      <m.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed bg-muted/20 py-16 text-center"
+                      >
+                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted/50">
+                          <FileText className="h-8 w-8 text-muted-foreground" />
+                        </div>
+                        <div className="space-y-2">
+                          <h3 className="text-lg font-semibold text-foreground">
+                            No matching pages
+                          </h3>
+                          <p className="text-sm text-muted-foreground max-w-sm">
+                            No pages match your current filters. Try adjusting
+                            your search or filters.
+                          </p>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setSearchQuery("");
+                            setFilter("all");
+                            setSortBy("newest");
+                          }}
+                          className="mt-2"
+                        >
+                          Clear All Filters
+                        </Button>
+                      </m.div>
+                    )}
+                </div>
+              </>
+            )}
           </div>
 
-          {/* Stats Sidebar */}
           <aside className="space-y-4">
             <Card
               variant="default"
@@ -893,7 +723,6 @@ export function DashboardScreen() {
         </div>
       </div>
 
-      {/* Dialogs */}
       <ProjectCreationModal
         isOpen={showCreationModal}
         onClose={() => setShowCreationModal(false)}
