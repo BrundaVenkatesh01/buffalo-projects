@@ -1,4 +1,3 @@
-// ...existing code...
 "use client";
 
 import { m } from "framer-motion";
@@ -10,11 +9,10 @@ import type { ReactNode } from "react";
 
 import { GradientMesh, GridPattern } from "@/components/graphics";
 import { Button } from "@/components/unified";
-import { ArrowRight, CheckCircle2, Download, Shield, Users } from "@/icons";
+import { ArrowRight, CheckCircle2, Download, Shield, Users, Sparkles } from "@/icons";
 import { cleanupGSAP, prefersReducedMotion } from "@/lib/gsap-utils";
 import { useAuthStore } from "@/stores/authStore";
 
-// Register GSAP plugins
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
@@ -117,7 +115,6 @@ export function HomeScreen() {
   const user = useAuthStore((state) => state.user);
   const heroRef = useRef<HTMLDivElement>(null);
   const howItWorksRef = useRef<HTMLElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (prefersReducedMotion()) {
@@ -184,22 +181,27 @@ export function HomeScreen() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="max-w-4xl mx-auto text-center py-24 relative z-10"
+          className="max-w-5xl mx-auto text-center py-24 relative z-10"
         >
-          <div className="min-h-[140px] md:min-h-[160px] flex items-center justify-center">
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white">
-              Showcase Your Buffalo Projects/Business
-            </h1>
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-white/20 px-4 py-2 backdrop-blur-sm mb-8">
+            <Sparkles className="h-4 w-4 text-blue-400" />
+            <span className="text-sm font-medium text-white">Buffalo Projects</span>
           </div>
 
-          <p className="text-xl md:text-2xl text-neutral-300 mt-8 mb-14 max-w-2xl mx-auto leading-relaxed">
-            Create a professional page for your business or project in minutes.{" "}
-            <span className="text-white font-semibold">
-              No tech skills needed.
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-8 leading-[1.1]">
+            Your work deserves
+            <br />
+            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              to be seen
             </span>
+          </h1>
+
+          <p className="text-xl md:text-2xl text-neutral-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            You're building something meaningful in Buffalo. Whether it's a business, a side project, or an idea taking shape—
+            <span className="text-white font-semibold"> give it a home where people can find it.</span>
           </p>
 
-          <div className="flex flex-col items-center gap-6 mt-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <Button
               variant="primary"
               size="lg"
@@ -207,111 +209,60 @@ export function HomeScreen() {
               rightIcon={
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
               }
-              className="group relative h-14 px-10 text-lg shadow-2xl shadow-blue-500/40 hover:shadow-blue-500/60 transition-all duration-300 border border-white/20 hover:border-white/30"
+              className="group relative h-14 px-10 text-lg bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 transition-all duration-300 border-0"
             >
-              Create My Business Page
+              Create Your Page
             </Button>
 
-            <div className="flex items-center gap-3 text-neutral-400 text-sm my-2">
-              <span className="w-16 h-px bg-white/10"></span>
-              <span>or</span>
-              <span className="w-16 h-px bg-white/10"></span>
-            </div>
+            <Button
+              variant="ghost"
+              size="lg"
+              onClick={() => router.push("/dashboard/discover")}
+              className="h-14 px-10 text-lg border border-white/20 hover:bg-white/10 text-white"
+            >
+              See Examples
+            </Button>
+          </div>
 
-            <div className="w-full max-w-xl rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-              <p className="text-sm text-neutral-400 mb-3 text-center">
-                Have a GitHub project? Import it:
-              </p>
-              <div className="flex w-full gap-3 items-stretch">
-                <input
-                  type="text"
-                  placeholder="github.com/yourname/project"
-                  className="flex-1 h-12 px-4 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/40 hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-blue-500/60 transition-all duration-200"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      const value = (e.target as HTMLInputElement).value.trim();
-                      if (value) {
-                        sessionStorage.setItem("quick_import_url", value);
-                        router.push(
-                          user
-                            ? "/workspace/new?import=github"
-                            : "/signup?next=/workspace/new?import=github",
-                        );
-                      }
-                    }
-                  }}
-                />
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    const input = document.querySelector(
-                      'input[placeholder*="github"]',
-                    ) as HTMLInputElement;
-                    const value = input?.value?.trim();
-                    if (value) {
-                      sessionStorage.setItem("quick_import_url", value);
-                      router.push(
-                        user
-                          ? "/workspace/new?import=github"
-                          : "/signup?next=/workspace/new?import=github",
-                      );
-                    }
-                  }}
-                  className="h-12 px-6 border border-white/10 hover:border-white/20 whitespace-nowrap"
-                >
-                  Import
-                </Button>
-              </div>
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-neutral-400">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-green-400" />
+              <span>Free to use</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-green-400" />
+              <span>Share anywhere</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-green-400" />
+              <span>No coding needed</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 text-neutral-500 text-sm mt-8">
-            <span className="w-12 h-px bg-white/10"></span>
-            <span>or</span>
-            <span className="w-12 h-px bg-white/10"></span>
-          </div>
-
-          <Button
-            variant="ghost"
-            size="lg"
-            onClick={() => router.push(user ? "/workspace/new" : "/signup")}
-            className="px-0 py-0 text-sm font-medium text-neutral-400 hover:text-white hover:underline underline-offset-4 transition-colors duration-200"
-          >
-            Start from scratch
-          </Button>
-
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-10">
-            {[
-              {
-                icon: <CheckCircle2 className="w-5 h-5" />,
-                text: "Free forever",
-              },
-              {
-                icon: <CheckCircle2 className="w-5 h-5" />,
-                text: "Shareable URL",
-              },
-              {
-                icon: <CheckCircle2 className="w-5 h-5" />,
-                text: "No login to view",
-              },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="group relative flex items-center gap-3 px-5 py-3 rounded-full bg-white/[0.03] border border-pink-500/20 backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.06] hover:border-pink-400/40 shadow-lg shadow-black/10"
+          <div className="mt-16 pt-8 border-t border-white/10">
+            <p className="text-sm text-neutral-500 mb-4">Have existing content?</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <button
+                onClick={() => router.push(user ? "/workspace/new?import=github" : "/signup")}
+                className="text-sm text-neutral-400 hover:text-white transition-colors underline underline-offset-4"
               >
-                <div
-                  aria-hidden
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 -z-10"
-                />
-
-                <div className="text-pink-400 group-hover:text-pink-300 transition-colors">
-                  {item.icon}
-                </div>
-                <span className="text-sm font-medium text-neutral-200">
-                  {item.text}
-                </span>
-              </div>
-            ))}
+                Import from GitHub
+              </button>
+              <span className="text-neutral-600">•</span>
+              <button
+                onClick={() => router.push(user ? "/workspace/new?import=file" : "/signup")}
+                className="text-sm text-neutral-400 hover:text-white transition-colors underline underline-offset-4"
+              >
+                Upload a document
+              </button>
+              <span className="text-neutral-600">•</span>
+              <button
+                onClick={() => router.push(user ? "/workspace/new?import=url" : "/signup")}
+                className="text-sm text-neutral-400 hover:text-white transition-colors underline underline-offset-4"
+              >
+                Import from URL
+              </button>
+            </div>
           </div>
         </m.div>
       </div>
@@ -337,36 +288,66 @@ export function HomeScreen() {
             className="section-title text-center mb-20"
           >
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight">
-              Your project page, done right
+              Built for creators,
+              <br />
+              <span className="text-neutral-400">not corporations</span>
             </h2>
             <p className="text-xl md:text-2xl text-neutral-300 font-light max-w-2xl mx-auto">
-              Import from anywhere. Polish in minutes.{" "}
-              <span className="text-white">Share a professional link.</span>
+              No complicated forms. No design skills required.{" "}
+              <span className="text-white">Just you and your story.</span>
             </p>
           </m.div>
 
-          <div ref={cardsRef} className="grid md:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             <FeatureCard
               icon={<Shield className="w-8 h-8" />}
-              title="Private until you're ready"
-              description="Work on your project privately. When you're happy with it, publish and get a shareable link anyone can view—no login required."
+              title="Start private, share when ready"
+              description="Work on your page privately. When it feels right, hit publish and get a link you can share anywhere. No pressure."
               index={0}
             />
 
             <FeatureCard
               icon={<Download className="w-8 h-8" />}
-              title="Import in seconds"
-              description="Paste your GitHub repo, website, or PDF. We auto-extract the details so you get a polished page without starting from scratch."
+              title="Bring your existing work"
+              description="Already have a GitHub repo, website, or document? Import it and we'll pull out the key details. Your page takes shape in minutes."
               index={1}
             />
 
             <FeatureCard
               icon={<Users className="w-8 h-8" />}
-              title="Perfect for teams"
-              description="Running an accelerator or class? Create a group and see everyone's projects in one dashboard. Great for cohorts and portfolios."
+              title="Join Buffalo's builder community"
+              description="See what others are working on. Get feedback. Find collaborators. Buffalo Projects is where the city's makers connect."
               index={2}
             />
           </div>
+        </div>
+      </section>
+
+      <section className="py-24 px-6 border-t border-neutral-900 relative">
+        <div className="max-w-4xl mx-auto text-center">
+          <m.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Made in Buffalo, for Buffalo
+            </h2>
+            <p className="text-lg text-neutral-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+              We're building a home for every project, business, and idea that makes this city special. 
+              Your story matters. Let's help you tell it.
+            </p>
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={() => router.push(user ? "/workspace/new" : "/signup")}
+              rightIcon={<ArrowRight className="w-5 h-5" />}
+              className="h-14 px-10 text-lg bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 shadow-2xl shadow-blue-500/40"
+            >
+              Start Your Page
+            </Button>
+          </m.div>
         </div>
       </section>
 
@@ -394,4 +375,3 @@ export function HomeScreen() {
     </div>
   );
 }
-// ...existing code...
