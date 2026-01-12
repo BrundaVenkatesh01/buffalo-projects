@@ -22,6 +22,7 @@ import {
   Pencil,
   Check,
   X,
+  Sparkles,
 } from "@/icons";
 import { cn } from "@/lib/utils";
 import { useWorkspaceStore } from "@/stores/workspaceStore";
@@ -47,10 +48,6 @@ const STAGE_CONFIG: Record<string, { label: string; icon: typeof TrendingUp }> =
     launching: { label: "Launching", icon: TrendingUp },
     scaling: { label: "Scaling", icon: TrendingUp },
   };
-
-// ============================================================================
-// Inline Editable Text Component
-// ============================================================================
 
 interface InlineEditableProps {
   value: string;
@@ -153,31 +150,28 @@ function InlineEditable({
   );
 }
 
-/**
- * Get color for completion percentage
- */
 function getCompletionColor(percentage: number): {
-  ring: string;
+  gradient: string;
   text: string;
   bg: string;
 } {
   if (percentage >= 75) {
     return {
-      ring: "#10b981", // green
-      text: "text-green-500",
+      gradient: "from-green-400 via-emerald-400 to-teal-400",
+      text: "text-green-400",
       bg: "bg-green-500/10",
     };
   }
   if (percentage >= 50) {
     return {
-      ring: "#f59e0b", // amber
-      text: "text-amber-500",
+      gradient: "from-amber-400 via-orange-400 to-yellow-400",
+      text: "text-amber-400",
       bg: "bg-amber-500/10",
     };
   }
   return {
-    ring: "#ef4444", // red
-    text: "text-red-500",
+    gradient: "from-red-400 via-pink-400 to-rose-400",
+    text: "text-red-400",
     bg: "bg-red-500/10",
   };
 }
@@ -186,7 +180,6 @@ export function ProjectOverview({
   workspace,
   onNavigateToTab,
 }: ProjectOverviewProps) {
-  // Get store actions for inline editing
   const updateWorkspace = useWorkspaceStore((state) => state.updateWorkspace);
 
   const completion = calculateWorkspaceCompletion(workspace);
@@ -195,7 +188,6 @@ export function ProjectOverview({
   const completionColor = getCompletionColor(completion.overall);
   const completionLabel = getCompletionLabel(completion.overall);
 
-  // Handlers for inline editing
   const handleProjectNameChange = useCallback(
     (newName: string) => {
       updateWorkspace({ projectName: newName });
@@ -210,7 +202,6 @@ export function ProjectOverview({
     [updateWorkspace],
   );
 
-  // Calculate workspace stats
   const stats = {
     journalEntries: workspace.journal?.length || 0,
     pivots: workspace.pivots?.length || 0,
@@ -219,7 +210,6 @@ export function ProjectOverview({
     lastModified: workspace.lastModified,
   };
 
-  // Determine next actions based on completion
   const nextActions = [];
   if (completion.canvas < 50) {
     nextActions.push({
@@ -229,6 +219,7 @@ export function ProjectOverview({
       tab: "canvas" as WorkspaceTabId,
       icon: Layers3,
       urgent: true,
+      gradient: "from-blue-500 via-cyan-500 to-teal-500",
     });
   }
 
@@ -240,6 +231,7 @@ export function ProjectOverview({
       tab: "journey" as WorkspaceTabId,
       icon: StickyNote,
       urgent: false,
+      gradient: "from-purple-500 via-pink-500 to-rose-500",
     });
   }
 
@@ -252,23 +244,10 @@ export function ProjectOverview({
       tab: "documents" as WorkspaceTabId,
       icon: FileArchive,
       urgent: false,
+      gradient: "from-orange-500 via-amber-500 to-yellow-500",
     });
   }
 
-  // Publishing hidden for now - projects won't be public initially
-  // if (!workspace.isPublic && completion.overall >= 40) {
-  //   nextActions.push({
-  //     title: "Ready to share?",
-  //     description:
-  //       "Your project is taking shape. Consider publishing for feedback.",
-  //     action: "Publish Project",
-  //     tab: "share" as WorkspaceTabId,
-  //     icon: Share2,
-  //     urgent: false,
-  //   });
-  // }
-
-  // If no next actions, show advanced actions
   if (nextActions.length === 0) {
     nextActions.push({
       title: "Track your pivots",
@@ -277,22 +256,19 @@ export function ProjectOverview({
       tab: "pivots" as WorkspaceTabId,
       icon: TrendingUp,
       urgent: false,
+      gradient: "from-green-500 via-emerald-500 to-teal-500",
     });
   }
 
   return (
     <div className="w-full">
       <Stack gap="lg">
-        {/* Redesigned Hero Section - Split Layout */}
         <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
-          {/* Main Project Card */}
           <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] p-5 shadow-xl backdrop-blur-sm">
-            {/* Ambient background gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.15] via-transparent to-transparent opacity-60" />
 
             <div className="relative">
               <Stack gap="sm">
-                {/* Stage Badge & Title */}
                 <div>
                   {stageConfig && workspace.stage && (
                     <div
@@ -331,7 +307,6 @@ export function ProjectOverview({
                   />
                 </div>
 
-                {/* Description */}
                 <InlineEditable
                   value={workspace.projectDescription || workspace.oneLiner || ""}
                   onSave={handleDescriptionChange}
@@ -340,7 +315,6 @@ export function ProjectOverview({
                   placeholder="Add a description to help others understand your project..."
                 />
 
-                {/* Metadata Badges - Simple */}
                 <div className="flex flex-wrap gap-2">
                   {workspace.isPublic && (
                     <Badge variant="default" className="px-3 py-1">
@@ -373,81 +347,81 @@ export function ProjectOverview({
             </div>
           </div>
 
-          {/* Progress & Quick Stats Card */}
-          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.06] to-white/[0.02] p-4 shadow-lg">
+          <div className="rounded-2xl border border-white/20 bg-gradient-to-br from-white/[0.08] to-white/[0.02] p-5 shadow-lg backdrop-blur-sm">
             <Stack gap="md">
-              {/* Circular Progress - Simplified */}
               <div className="flex flex-col items-center">
                 <div className="relative">
                   <svg width="72" height="72" className="transform -rotate-90">
-                    {/* Background circle */}
                     <circle
                       cx="36"
                       cy="36"
                       r="32"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="5"
+                      strokeWidth="4"
                       className="text-white/10"
                     />
-                    {/* Progress circle with subtle color */}
+                    <defs>
+                      <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" className={cn("stop-color-[currentColor]", completionColor.text)} />
+                        <stop offset="100%" className={cn("stop-color-[currentColor]", completionColor.text)} style={{opacity: 0.6}} />
+                      </linearGradient>
+                    </defs>
                     <circle
                       cx="36"
                       cy="36"
                       r="32"
                       fill="none"
-                      stroke={completionColor.ring}
-                      strokeWidth="5"
+                      stroke="url(#progress-gradient)"
+                      strokeWidth="4"
                       strokeLinecap="round"
                       strokeDasharray={`${(completion.overall / 100) * 201.06} 201.06`}
                       className="transition-all duration-700 ease-out"
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <p className="font-display text-xl font-bold text-foreground">
+                    <p className={cn("font-display text-xl font-bold bg-gradient-to-br bg-clip-text text-transparent", completionColor.gradient)}>
                       {completion.overall}%
                     </p>
                   </div>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="mt-1 text-xs font-medium text-neutral-300">
                   {completionLabel}
                 </p>
               </div>
 
-              {/* Mini Stats - Compact grid */}
               <div className="grid grid-cols-2 gap-2 border-t border-white/10 pt-3">
-                <div className="flex items-center gap-2 rounded-lg bg-white/[0.03] px-2 py-1.5">
-                  <Layers3 className="h-3.5 w-3.5 text-primary" />
-                  <span className="text-xs text-muted-foreground">Canvas</span>
-                  <span className="ml-auto text-sm font-bold tabular-nums text-foreground">
+                <div className="flex items-center gap-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/10 border border-blue-500/30 px-3 py-2 backdrop-blur-sm">
+                  <Layers3 className="h-4 w-4 text-blue-400" />
+                  <span className="text-xs text-neutral-300">Canvas</span>
+                  <span className="ml-auto text-base font-bold tabular-nums text-white">
                     {completion.canvas}%
                   </span>
                 </div>
-                <div className="flex items-center gap-2 rounded-lg bg-white/[0.03] px-2 py-1.5">
-                  <StickyNote className="h-3.5 w-3.5 text-primary" />
-                  <span className="text-xs text-muted-foreground">Journey</span>
-                  <span className="ml-auto text-sm font-bold tabular-nums text-foreground">
+                <div className="flex items-center gap-2 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/10 border border-purple-500/30 px-3 py-2 backdrop-blur-sm">
+                  <StickyNote className="h-4 w-4 text-purple-400" />
+                  <span className="text-xs text-neutral-300">Journey</span>
+                  <span className="ml-auto text-base font-bold tabular-nums text-white">
                     {stats.journalEntries}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 rounded-lg bg-white/[0.03] px-2 py-1.5">
-                  <TrendingUp className="h-3.5 w-3.5 text-primary" />
-                  <span className="text-xs text-muted-foreground">Pivots</span>
-                  <span className="ml-auto text-sm font-bold tabular-nums text-foreground">
+                <div className="flex items-center gap-2 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/30 px-3 py-2 backdrop-blur-sm">
+                  <TrendingUp className="h-4 w-4 text-green-400" />
+                  <span className="text-xs text-neutral-300">Pivots</span>
+                  <span className="ml-auto text-base font-bold tabular-nums text-white">
                     {stats.pivots}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 rounded-lg bg-white/[0.03] px-2 py-1.5">
-                  <FileArchive className="h-3.5 w-3.5 text-primary" />
-                  <span className="text-xs text-muted-foreground">Docs</span>
-                  <span className="ml-auto text-sm font-bold tabular-nums text-foreground">
+                <div className="flex items-center gap-2 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 px-3 py-2 backdrop-blur-sm">
+                  <FileArchive className="h-4 w-4 text-orange-400" />
+                  <span className="text-xs text-neutral-300">Docs</span>
+                  <span className="ml-auto text-base font-bold tabular-nums text-white">
                     {stats.documents}
                   </span>
                 </div>
               </div>
 
-              {/* Last Updated - Inline */}
-              <p className="text-center text-xs text-muted-foreground">
+              <p className="text-center text-xs text-neutral-400">
                 <Clock className="mr-1 inline h-3 w-3" />
                 Updated{" "}
                 {formatDistanceToNow(new Date(stats.lastModified), {
@@ -458,14 +432,13 @@ export function ProjectOverview({
           </div>
         </div>
 
-        {/* Suggested Next Steps - Redesigned */}
         <div>
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-foreground">
+              <h2 className="text-xl font-bold text-white">
                 What&apos;s Next?
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-neutral-300">
                 Keep your project moving forward
               </p>
             </div>
@@ -478,57 +451,40 @@ export function ProjectOverview({
                 <button
                   key={index}
                   onClick={() => onNavigateToTab(action.tab)}
-                  className={cn(
-                    "group relative overflow-hidden rounded-2xl border p-6 text-left transition-all duration-300",
-                    action.urgent
-                      ? "border-primary/50 bg-gradient-to-br from-primary/15 via-primary/10 to-primary/5 hover:border-primary/70 hover:shadow-xl hover:shadow-primary/10"
-                      : "border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04] hover:shadow-lg",
-                  )}
+                  className="group relative overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-white/[0.06] to-white/[0.02] p-6 text-left transition-all duration-300 hover:border-white/30 hover:bg-white/[0.08] hover:shadow-xl hover:-translate-y-1"
                 >
-                  {/* Background decoration */}
+                  <div className={cn("absolute inset-0 opacity-10 bg-gradient-to-br", action.gradient)} />
                   {action.urgent && (
-                    <>
-                      <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
-                      <div className="absolute right-4 top-4">
-                        <div className="animate-pulse rounded-full bg-primary/30 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
-                          Priority
-                        </div>
+                    <div className="absolute right-4 top-4">
+                      <div className={cn("rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-wider shadow-lg bg-gradient-to-r", action.gradient, "text-white")}>
+                        <Sparkles className="inline h-3 w-3 mr-1" />
+                        Priority
                       </div>
-                    </>
+                    </div>
                   )}
 
                   <div className="relative flex flex-col gap-4">
-                    {/* Icon */}
                     <div
                       className={cn(
-                        "flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-3",
-                        action.urgent
-                          ? "bg-gradient-to-br from-primary/40 to-primary/20 shadow-lg shadow-primary/30"
-                          : "bg-gradient-to-br from-white/15 to-white/5",
+                        "flex h-16 w-16 items-center justify-center rounded-2xl shadow-lg transition-all duration-300 group-hover:scale-110 bg-gradient-to-br",
+                        action.gradient
                       )}
                     >
-                      <ActionIcon
-                        className={cn(
-                          "h-7 w-7",
-                          action.urgent ? "text-primary" : "text-foreground/80",
-                        )}
-                      />
+                      <ActionIcon className="h-8 w-8 text-white" />
                     </div>
 
-                    {/* Content */}
                     <div className="space-y-2">
-                      <h3 className="text-lg font-bold leading-tight text-foreground">
+                      <h3 className="text-lg font-bold leading-tight text-white">
                         {action.title}
                       </h3>
-                      <p className="text-sm leading-relaxed text-muted-foreground/90">
+                      <p className="text-sm leading-relaxed text-neutral-300">
                         {action.description}
                       </p>
                     </div>
 
-                    {/* CTA */}
-                    <div className="mt-2 flex items-center gap-2 text-sm font-semibold text-primary transition-all group-hover:gap-3">
+                    <div className={cn("mt-2 flex items-center gap-2 text-sm font-semibold transition-all group-hover:gap-3 bg-gradient-to-r bg-clip-text text-transparent", action.gradient)}>
                       <span>{action.action}</span>
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      <ArrowRight className={cn("h-4 w-4 transition-transform group-hover:translate-x-1", action.gradient.replace('from-', 'text-').split(' ')[0])} style={{color: 'currentColor'}} />
                     </div>
                   </div>
                 </button>
@@ -537,50 +493,49 @@ export function ProjectOverview({
           </div>
         </div>
 
-        {/* Workspace Tools - Redesigned */}
         <div>
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-foreground">
+              <h2 className="text-xl font-bold text-white">
                 Your Toolkit
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-neutral-300">
                 Everything you need to build and iterate
               </p>
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2">
             <button
               onClick={() => onNavigateToTab("canvas")}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-transparent p-6 text-left transition-all duration-300 hover:border-primary/30 hover:bg-white/[0.06] hover:shadow-lg"
+              className="group relative overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-blue-500/10 to-cyan-500/5 p-6 text-left transition-all duration-300 hover:from-blue-500/15 hover:to-cyan-500/10 hover:border-blue-500/40 hover:shadow-xl hover:-translate-y-1"
             >
               <div className="relative space-y-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 shadow-md transition-transform duration-300 group-hover:scale-110">
-                  <Layers3 className="h-7 w-7 text-primary" />
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/50 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-xl">
+                  <Layers3 className="h-8 w-8 text-white" />
                 </div>
 
                 <div>
-                  <h3 className="mb-1 text-lg font-bold text-foreground">
+                  <h3 className="mb-1 text-lg font-bold text-white">
                     Project Canvas
                   </h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground/80">
+                  <p className="text-sm leading-relaxed text-neutral-300">
                     Map what makes your project special
                   </p>
                 </div>
 
                 <div className="space-y-2 pt-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-medium text-muted-foreground">
+                    <span className="font-medium text-neutral-400">
                       Progress
                     </span>
-                    <span className="font-bold tabular-nums text-foreground">
+                    <span className="font-bold tabular-nums text-white">
                       {completion.canvas}%
                     </span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-white/10">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-primary to-primary/60 transition-all duration-500"
+                      className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500 shadow-lg shadow-blue-500/50"
                       style={{ width: `${completion.canvas}%` }}
                     />
                   </div>
@@ -590,29 +545,29 @@ export function ProjectOverview({
 
             <button
               onClick={() => onNavigateToTab("documents")}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-transparent p-6 text-left transition-all duration-300 hover:border-primary/30 hover:bg-white/[0.06] hover:shadow-lg"
+              className="group relative overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-orange-500/10 to-amber-500/5 p-6 text-left transition-all duration-300 hover:from-orange-500/15 hover:to-amber-500/10 hover:border-orange-500/40 hover:shadow-xl hover:-translate-y-1"
             >
               <div className="relative space-y-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 shadow-md transition-transform duration-300 group-hover:scale-110">
-                  <FileArchive className="h-7 w-7 text-primary" />
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 shadow-lg shadow-orange-500/50 transition-transform duration-300 group-hover:scale-110 group-hover:shadow-xl">
+                  <FileArchive className="h-8 w-8 text-white" />
                 </div>
 
                 <div>
-                  <h3 className="mb-1 text-lg font-bold text-foreground">
+                  <h3 className="mb-1 text-lg font-bold text-white">
                     Evidence Library
                   </h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground/80">
+                  <p className="text-sm leading-relaxed text-neutral-300">
                     Store decks, research, and materials
                   </p>
                 </div>
 
                 <div className="flex items-center gap-2 pt-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <span className="text-lg font-bold tabular-nums text-primary">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 shadow-lg">
+                    <span className="text-xl font-bold tabular-nums text-white">
                       {stats.documents}
                     </span>
                   </div>
-                  <span className="text-sm font-medium text-muted-foreground">
+                  <span className="text-sm font-medium text-neutral-300">
                     {stats.documents === 0
                       ? "No files yet"
                       : stats.documents === 1
