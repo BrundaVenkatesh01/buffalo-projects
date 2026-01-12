@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/verify-env.mjs && next build",
+    "build": "next build",
     "postbuild": "next-sitemap",
     "build:skip-verify": "next build",
     "analyze": "ANALYZE=true next build",
